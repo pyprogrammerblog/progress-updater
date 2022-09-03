@@ -9,6 +9,14 @@ def progress_updater(
 ):
     """
     Task Updater Decorator
+
+    >>> from progress_updater.decorator import progress_updater
+    >>>
+    >>> @progress_updater()
+    >>> def task():
+    >>>     return "Hello World"
+    >>>
+    >>> task()
     """
 
     def decorator(func):
