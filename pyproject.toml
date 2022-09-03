@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "task_updater"
+version = "0.1.0"
+description = "Task Updater"
+readme = "README.md"
+license = "LICENSE"
+include = ["CHANGELOG.md"]
+authors = ["Jose Vazquez <josevazjim88@gmail.com>"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+homepage = "https://github.com/pyprogrammerblog/task-updater"
+documentation = "https://task-updater.readthedocs.io/en/latest/"
+
+[virtualenvs]
+create = true  # this creates a .venv folder
+in-project = true
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^1.10.1"
+pymongo = "^4.2.0"
+sqlmodel = "^0.0.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.2"
+flake8 = "^4.0.1"
+black = "^22.6.0"
+ipython = "^8.4.0"
+notebook = "^6.4.12"
+mock = "^4.0.3"
+mypy = "^0.971"
+Sphinx = "^5.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
