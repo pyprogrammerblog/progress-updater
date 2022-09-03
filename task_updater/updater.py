@@ -15,22 +15,22 @@ class ProgressUpdater:
 
     def __init__(
         self,
-        name: str,
+        task_name: str,
         uuid: UUID = None,
         suppress_exception: bool = True,
         verbose: bool = True,
     ):
         self.uuid: UUID = uuid or uuid4()
-        self.name: str = name
+        self.task_name: str = task_name
         self.verbose: bool = verbose
         self.exception: Optional[Tuple] = None
         self.suppress_exception: bool = suppress_exception
-        self.log = Log(uuid=uuid, name=name)
+        self.log = Log(uuid=uuid, task_name=task_name)
 
-    def __enter__(self, name: str = None):
-        self.name = name or self.name
+    def __enter__(self, task_name: str = None):
+        self.task_name = task_name or "..."
         self.start_t, self.end_t = datetime.datetime.utcnow(), None
-        self.notify(" - " + self.name)
+        self.notify(f"- Entering {self.task_name}")
         self.log.save()
 
     def __exit__(self, exc_type, exc_val, exc_tb):

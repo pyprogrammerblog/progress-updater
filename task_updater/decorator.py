@@ -2,7 +2,7 @@ import functools
 from task_updater.updater import ProgressUpdater
 
 
-def task_updater(
+def progress_updater(
     task_name: str = None,
     verbose: bool = True,
     suppress_exception: bool = True,

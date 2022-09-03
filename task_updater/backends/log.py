@@ -16,18 +16,24 @@ logger = logging.getLogger(__name__)
 DEFAULT_TTR = 30 * 60  # 30 min
 
 
-class Log(DBAdapter):
+class Status:
     """
-    Defines the log written to DB
+    Status
     """
 
     PENDING: str = "PENDING"
     STARTED: str = "STARTED"
     SUCCESS: str = "SUCCESS"
 
+
+class Log(DBAdapter):
+    """
+    Defines the log written to DB
+    """
+
     uuid: UUID = Field(default_factory=uuid4, description="UUID")
     task_name: str = Field(description="Task name")
-    status: str = Field(default=PENDING, description="Current status")
+    status: str = Field(default=Status.PENDING, description="Status")
     log: Optional[Any] = Field(default=None, description="Result")
 
     start_time: Optional[datetime] = Field(

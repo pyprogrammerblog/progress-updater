@@ -23,7 +23,7 @@ Basic usage
 ```python
 from task_updater import ProgressUpdater
 
-updater = ProgressUpdater(name="Progess Updater")
+updater = ProgressUpdater(task_name="Progress Updater")
 
 with updater(task_name="First part"):
     pass
