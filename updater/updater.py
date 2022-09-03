@@ -8,11 +8,18 @@ class Updater:
     """
     Task Updater
     """
+
     FAIL = "FAIL"
     COMPLETED = "SUCCESS"
     PENDING = "PENDING"
 
-    def __init__(self, task_name: str, uuid: UUID = None, suppress_exception: bool = True, verbose: bool = True):
+    def __init__(
+        self,
+        task_name: str,
+        uuid: UUID = None,
+        suppress_exception: bool = True,
+        verbose: bool = True,
+    ):
         self.uuid: UUID = uuid or uuid4()
         self.task_name: str = task_name
         self.verbose: bool = verbose
@@ -23,7 +30,7 @@ class Updater:
     def __enter__(self, name: str = None):
         self.task_name = name or self.task_name
         self.start_t, self.end_t = datetime.datetime.utcnow(), None
-        self.notify(' - ' + self.task_name)
+        self.notify(" - " + self.task_name)
         self.log.save()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -31,11 +38,11 @@ class Updater:
         hours, minutes = td.seconds // 3600, td.seconds // 60 % 60
         self.notify(f"\tTime spent: {hours}h{minutes}m")
         if exc_type:
-            self.notify('\tFailed')
-            self.notify(f'\tError message: {exc_type}: {exc_val}')
+            self.notify("\tFailed")
+            self.notify(f"\tError message: {exc_type}: {exc_val}")
             self.exception = (exc_type, exc_val, exc_tb)
         else:
-            self.notify('\tSuccessfully completed')
+            self.notify("\tSuccessfully completed")
         self.log.save()
         return self.suppress_exception
 
@@ -45,7 +52,7 @@ class Updater:
             raise exc_type(exc_val).with_traceback(exc_tb)
 
     def notify(self, message):
-        msg = '\t' + message
+        msg = "\t" + message
         self.log.log += f"{message}\n"
         self.log.save()
 
