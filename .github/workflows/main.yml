@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build broker
+        run: docker-compose build app
+
+      - name: Install python packages
+        run: docker-compose run --rm app poetry install
+
+      - name: Check your installed dependencies for security vulnerabilities
+        run: docker-compose run --rm app poetry check
+
+      - name: Test
+        run: docker-compose run --rm app poetry run pytest
+
+      - name: Flake8
+        run: docker-compose run --rm app poetry run flake8
+
+      - name: MyPy
+        run: docker-compose run --rm app poetry run mypy arend --no-strict-optional --ignore-missing-imports
+
+      - name: Remove Services
+        run: docker-compose down
