@@ -4,7 +4,7 @@ from task_updater.backends.log import Log
 from typing import Tuple, Optional
 
 
-class Updater:
+class ProgressUpdater:
     """
     Task Updater
     """
@@ -15,22 +15,22 @@ class Updater:
 
     def __init__(
         self,
-        task_name: str,
+        name: str,
         uuid: UUID = None,
         suppress_exception: bool = True,
         verbose: bool = True,
     ):
         self.uuid: UUID = uuid or uuid4()
-        self.task_name: str = task_name
+        self.name: str = name
         self.verbose: bool = verbose
         self.exception: Optional[Tuple] = None
         self.suppress_exception: bool = suppress_exception
-        self.log = Log(uuid=uuid, task_name=task_name)
+        self.log = Log(uuid=uuid, name=name)
 
     def __enter__(self, name: str = None):
-        self.task_name = name or self.task_name
+        self.name = name or self.name
         self.start_t, self.end_t = datetime.datetime.utcnow(), None
-        self.notify(" - " + self.task_name)
+        self.notify(" - " + self.name)
         self.log.save()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -45,6 +45,10 @@ class Updater:
             self.notify("\tSuccessfully completed")
         self.log.save()
         return self.suppress_exception
+
+    def __call__(self, **kwargs):
+        self.__dict__.update(kwargs)
+        return self
 
     def raise_latest_exception(self):
         if self.exception:

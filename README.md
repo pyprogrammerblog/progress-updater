@@ -21,6 +21,17 @@ Basic usage
 ---------------
 
 ```python
+from task_updater import ProgressUpdater
+
+updater = ProgressUpdater(name="Progess Updater")
+
+with updater(task_name="First part"):
+    pass
+
+with updater(task_name="Second part"):
+    pass
+
+updater.raise_latest_exception()
 ```
 
 Examples
