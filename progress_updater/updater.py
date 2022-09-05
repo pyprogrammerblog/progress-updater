@@ -33,13 +33,14 @@ class ProgressUpdater:
         config = config or Config()
         self.log = config.backend()(uuid=uuid, task_name=task_name)
 
-    def __enter__(self, task_name: str = None):
+    def __enter__(self, task_name: str = None) -> "ProgressUpdater":
         self.task_name = task_name or "..."
         self.start_t, self.end_t = datetime.datetime.utcnow(), None
         self.notify(f"- Entering {self.task_name}")
         self.log.save()
+        return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
         td = self.end_t - self.start_t
         hours, minutes = td.seconds // 3600, td.seconds // 60 % 60
         self.notify(f"\tTime spent: {hours}h{minutes}m")
@@ -61,7 +62,7 @@ class ProgressUpdater:
             exc_type, exc_val, exc_tb = self.exception
             raise exc_type(exc_val).with_traceback(exc_tb)
 
-    def notify(self, message: str):
+    def notify(self, message: str) -> NoReturn:
         msg = "\t" + message
         self.log.log += f"{message}\n"
         self.log.save()
