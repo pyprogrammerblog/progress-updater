@@ -19,9 +19,9 @@ class MongoLog(BaseLog):
     """
 
     class Meta:
-        db_conn = None
-        db_name = None
-        db_collection = None
+        mongo_connection: str
+        mongo_db_name: str
+        mongo_collection: str
 
     @classmethod
     @contextmanager
@@ -29,15 +29,15 @@ class MongoLog(BaseLog):
         """
         Yield a connection
         """
-        assert cls.Meta.db_conn, "Please set a db connection"
-        assert cls.Meta.db_name, "Please set a db name"
-        assert cls.Meta.db_collection, "Please set a db collection"
+        assert cls.Meta.mongo_connection, "Please set a db connection"
+        assert cls.Meta.mongo_db_name, "Please set a db name"
+        assert cls.Meta.mongo_collection, "Please set a db collection"
 
         with MongoClient(
-            cls.Meta.db_conn, UuidRepresentation="standard"
+            cls.Meta.mongo_connection, UuidRepresentation="standard"
         ) as client:
-            db = client.get_database(cls.Meta.db_name)
-            collection = db.get_collection(cls.Meta.db_collection)
+            db = client.get_database(cls.Meta.mongo_db_name)
+            collection = db.get_collection(cls.Meta.mongo_collection)
             yield collection
 
     @classmethod
@@ -72,12 +72,12 @@ class MongoLog(BaseLog):
 
 
 class MongoConfig(BaseConfig):
-    updater_mongo_connection: str
-    updater_mongo_db_name: str
-    updater_mongo_collection: str
+    mongo_connection: str
+    mongo_db_name: str
+    mongo_collection: str
 
     def backend(self):
-        MongoLog.Config.db_connection = self.updater_mongo_connection
-        MongoLog.Config.db_name = self.updater_mongo_db_name
-        MongoLog.Config.db_collection = self.updater_mongo_collection
+        MongoLog.Config.mongo_connection = self.mongo_connection
+        MongoLog.Config.mongo_db_name = self.mongo_db_name
+        MongoLog.Config.mongo_collection = self.mongo_collection
         return MongoLog

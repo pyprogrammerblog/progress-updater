@@ -62,14 +62,12 @@ class RedisLog(BaseLog):
 
 class RedisConfig(BaseConfig):
 
-    updater_redis_host: str
-    updater_redis_db: int
-    updater_redis_password: str
+    redis_host: str
+    redis_db: int
+    redis_password: str
 
     def backend(self):
-        from progress_updater.backends.mongo import MongoLog
-
-        MongoLog.Config.updater_redis_host = self.updater_redis_host
-        MongoLog.Config.updater_redis_db = self.updater_redis_db
-        MongoLog.Config.updater_redis_password = self.updater_redis_password
-        return MongoLog
+        RedisLog.Config.redis_host = self.redis_host
+        RedisLog.Config.redis_db = self.redis_db
+        RedisLog.Config.redis_password = self.redis_password
+        return RedisLog
