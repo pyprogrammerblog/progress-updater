@@ -21,7 +21,7 @@ class Config(BaseConfig):
     Config
     """
 
-    configs: RedisConfig | MongoConfig | SQLConfig
+    updater: RedisConfig | MongoConfig | SQLConfig
 
     class Config:
         env_file = ".env", ".env.prod"
@@ -29,4 +29,4 @@ class Config(BaseConfig):
         env_nested_delimiter = "__"
 
     def backend(self):
-        return self.configs.backend()
+        return self.updater.backend()
