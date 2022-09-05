@@ -55,14 +55,14 @@ with ProgressUpdater(task_name="task", settings=redis_settings) as updater:
     ...
 ```
 2. Environment variables. 
-The `PU__` prefix indicates that is for the `ProgressUpdater`.
+The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell
 export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
 export PU__SQL_TABLE=logs
 ```
 
 3. Env file (~/.env)
-The `PU__` prefix indicates that is for the `ProgressUpdater`.
+The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell
 PU__MONGO_CONNECTION=mongodb://user:pass@mongo:27017
 PU__MONGO_DB_NAME=db
