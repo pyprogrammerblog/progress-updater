@@ -25,7 +25,8 @@ from progress_updater import ProgressUpdater
 
 updater = ProgressUpdater(task_name="Progress Updater")
 
-with updater(task_name="First part"):
+with updater(task_name="First part") as updater:
+    updater.notify("starting...")
     pass
 
 with updater(task_name="Second part"):
