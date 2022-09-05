@@ -1,30 +1,22 @@
 import logging
 from datetime import datetime
-from uuid import uuid4, UUID
-
+from uuid import UUID
+from progress_updater.backends import BaseConfig
+from progress_updater.backends.base import BaseLog
 from pymongo.collection import Collection
 from contextlib import contextmanager
-from pydantic import BaseModel, Field
 from pymongo.mongo_client import MongoClient
 
-__all__ = ["DBAdapter"]
+__all__ = ["RedisLog"]
 
 
 logger = logging.getLogger(__name__)
 
 
-class DBAdapter(BaseModel):
+class RedisLog(BaseLog):
     """
     Mongo DB Adapter
     """
-
-    uuid: UUID = Field(default_factory=uuid4, description="UUID")
-    updated: datetime = Field(default_factory=datetime.utcnow)
-
-    class Meta:
-        db_connection: str = settings.mongo_connection
-        db_name: str = settings.mongo_db
-        db_collection: str
 
     @classmethod
     @contextmanager
@@ -78,3 +70,18 @@ class DBAdapter(BaseModel):
         with self.mongo_collection() as collection:
             deleted = collection.delete_one({"uuid": self.uuid})
             return deleted.deleted_count
+
+
+class RedisConfig(BaseConfig):
+
+    updater_redis_host: str
+    updater_redis_db: int
+    updater_redis_password: str
+
+    def backend(self):
+        from progress_updater.backends.mongo import MongoLog
+
+        MongoLog.Config.updater_redis_host = self.updater_redis_host
+        MongoLog.Config.updater_redis_db = self.updater_redis_db
+        MongoLog.Config.updater_redis_password = self.updater_redis_password
+        return MongoLog

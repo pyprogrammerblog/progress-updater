@@ -21,7 +21,7 @@ Basic usage
 ---------------
 
 ```python
-from task_updater import ProgressUpdater
+from progress_updater import ProgressUpdater
 
 updater = ProgressUpdater(task_name="Progress Updater")
 
@@ -34,11 +34,16 @@ with updater(task_name="Second part"):
 updater.raise_latest_exception()
 ```
 
-Examples
+Credentials
 ----------------------
 
-For more complex examples please visit 
-the [notebooks' folder](https://github.com/pyprogrammerblog/tiny-blocks/blob/master/notebooks/Examples.ipynb).
+1. Passing credentials as parameters in the boto.client() method
+2. Passing credentials as parameters when creating a Session object
+3. Environment variables
+4. Shared credential file (~/.aws/credentials)
+5. AWS config file (~/.aws/config)
+6. Assume Role provider
+7. Boto2 config file (/etc/boto.cfg and ~/.boto)
 
 
 Documentation

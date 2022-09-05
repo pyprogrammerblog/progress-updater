@@ -1,4 +1,3 @@
-from task_updater.backends.adapters import DBAdapter
 from datetime import datetime
 from pydantic import BaseModel
 from pydantic import Field
@@ -26,7 +25,7 @@ class Status:
     SUCCESS: str = "SUCCESS"
 
 
-class Log(DBAdapter):
+class BaseLog(BaseModel):
     """
     Defines the log written to DB
     """
@@ -46,5 +45,5 @@ class Log(DBAdapter):
 
 
 class Logs(BaseModel):
-    logs: List[Log] = Field(default_factory=list, description="Logs")
+    logs: List[BaseLog] = Field(default_factory=list, description="Logs")
     count: int = Field(default=0, description="Count")
