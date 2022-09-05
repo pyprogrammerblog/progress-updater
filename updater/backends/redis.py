@@ -62,8 +62,8 @@ class RedisLog(BaseLog):
 
 class RedisSettings(Base):
 
-    redis_host: str
-    redis_db: int
+    redis_host: str = "localhost"
+    redis_db: int = 1
     redis_password: str
 
     def backend(self):
