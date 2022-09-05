@@ -22,7 +22,7 @@ class ProgressUpdater:
         uuid: UUID = None,
         suppress_exception: bool = True,
         verbose: bool = True,
-        config: MongoConfig | RedisConfig | SQLConfig = None
+        config: MongoConfig | RedisConfig | SQLConfig = None,
     ):
         self.uuid: UUID = uuid or uuid4()
         self.task_name: str = task_name

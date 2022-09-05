@@ -17,6 +17,7 @@ class SQLLog(BaseLog):
     """
     Mongo DB Adapter
     """
+
     class Config:
         sql_dsn: str
         sql_db_name: str

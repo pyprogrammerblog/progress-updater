@@ -17,6 +17,7 @@ class MongoLog(BaseLog):
     """
     Mongo DB Adapter
     """
+
     class Meta:
         db_conn = None
         db_name = None

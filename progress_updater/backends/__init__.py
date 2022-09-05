@@ -8,6 +8,7 @@ class BaseConfig(BaseSettings):
     """
     Base Config
     """
+
     def backend(self):
         """
         Return the backend Log class
@@ -19,12 +20,13 @@ class Config(BaseConfig):
     """
     Config
     """
+
     configs: RedisConfig | MongoConfig | SQLConfig
 
     class Config:
-        env_file = '.env', '.env.prod'
-        env_file_encoding = 'utf-8'
-        env_nested_delimiter = '__'
+        env_file = ".env", ".env.prod"
+        env_file_encoding = "utf-8"
+        env_nested_delimiter = "__"
 
     def backend(self):
         return self.configs.backend()

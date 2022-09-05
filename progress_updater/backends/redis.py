@@ -24,18 +24,6 @@ class RedisLog(BaseLog):
         """
         Yield a connection
         """
-        db_conn = (
-            cls.Meta.db_connection
-            if hasattr(cls.Meta, "db_connection")
-            else DBAdapter.Meta.db_connection
-        )
-        db_name = (
-            cls.Meta.db_name
-            if hasattr(cls.Meta, "db_name")
-            else DBAdapter.Meta.db_name
-        )
-        db_collection = cls.Meta.db_collection or "default"
-
         with MongoClient(db_conn, UuidRepresentation="standard") as client:
             db = client.get_database(db_name)
             collection = db.get_collection(db_collection)
