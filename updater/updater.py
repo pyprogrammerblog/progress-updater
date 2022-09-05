@@ -4,7 +4,7 @@ from updater.backends import Settings
 from updater.backends.mongo import MongoSettings
 from updater.backends.redis import RedisSettings
 from updater.backends.sql import SQLSettings
-from typing import Tuple, Optional, NoReturn
+from typing import Tuple, Optional
 
 
 class ProgressUpdater:
@@ -35,13 +35,13 @@ class ProgressUpdater:
 
     def __enter__(self, task_name: str = None) -> "ProgressUpdater":
         self.task_name = task_name or "..."
-        self.start_t, self.end_t = datetime.datetime.utcnow(), None
+        self.start_t = datetime.datetime.utcnow()
         self.notify(f"- Entering {self.task_name}")
         self.log.save()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
-        td = self.end_t - self.start_t
+        td = datetime.datetime.utcnow() - self.start_t
         hours, minutes = td.seconds // 3600, td.seconds // 60 % 60
         self.notify(f"\tTime spent: {hours}h{minutes}m")
         if exc_type:
@@ -57,12 +57,12 @@ class ProgressUpdater:
         self.__dict__.update(kwargs)
         return self
 
-    def raise_latest_exception(self) -> NoReturn | Exception:
+    def raise_latest_exception(self):
         if self.exception:
             exc_type, exc_val, exc_tb = self.exception
             raise exc_type(exc_val).with_traceback(exc_tb)
 
-    def notify(self, message: str) -> NoReturn:
+    def notify(self, message: str):
         msg = "\t" + message
         self.log.log += f"{message}\n"
         self.log.save()
