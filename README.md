@@ -26,12 +26,12 @@ from updater import ProgressUpdater
 # create an updater object
 updater = ProgressUpdater(task_name="My Task")
 
-with updater(task_name="First part") as updater:
+with updater(block_name="First part") as updater:
     # doing things
     updater.notify("doing first part...")
     # doing more things
 
-with updater(task_name="Second part"):
+with updater(block_name="Second part"):
     # doing things
     updater.notify("doing second part...")
     # doing more things
@@ -51,8 +51,10 @@ from updater.backends.redis import RedisSettings
 
 redis_settings = RedisSettings(redis_password="pass")
 
-with ProgressUpdater(task_name="task", settings=redis_settings) as updater:
-    ...
+with ProgressUpdater(task_name="My Task", settings=redis_settings) as updater:
+    # doing things
+    updater.notify("doing things...")
+    # doing more things
 ```
 2. Environment variables. 
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`.

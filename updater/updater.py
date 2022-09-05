@@ -25,7 +25,7 @@ class ProgressUpdater:
         settings: MongoSettings | RedisSettings | SQLSettings = None,
     ):
         self.uuid: UUID = uuid or uuid4()
-        self.task_name: str = task_name
+        self.task_name: str = task_name.capitalize()
         self.verbose: bool = verbose
         self.exception: Optional[Tuple] = None
         self.suppress_exception: bool = suppress_exception
@@ -33,10 +33,10 @@ class ProgressUpdater:
         settings = settings or Settings()
         self.log = settings.backend()(uuid=uuid, task_name=task_name)
 
-    def __enter__(self, task_name: str = None) -> "ProgressUpdater":
-        self.task_name = task_name or "..."
+    def __enter__(self, block_name: str = None) -> "ProgressUpdater":
+        self.block_name = block_name or "..."
         self.start_t = datetime.datetime.utcnow()
-        self.notify(f"- Entering {self.task_name}")
+        self.notify(f"- Entering {self.block_name}")
         self.log.save()
         return self
 
