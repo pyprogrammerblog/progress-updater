@@ -42,7 +42,8 @@ updater.raise_latest_exception()
 Settings
 ----------
 
-There are three ways to passing settings to the updater.
+There are three possible ways to pass settings to the updater. 
+This is the priority.
 
 1. Passing settings as parameters when creating a `ProgressUpdater` object.
 ```python
