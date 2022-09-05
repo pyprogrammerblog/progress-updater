@@ -5,6 +5,8 @@ from uuid import UUID
 from progress_updater.backends.base import BaseLog
 from pymongo.collection import Collection
 from contextlib import contextmanager
+from sqlalchemy import create_engine
+from sqlmodel import Session
 
 
 __all__ = ["SQLLog", "SQLConfig"]
@@ -25,11 +27,12 @@ class SQLLog(BaseLog):
 
     @classmethod
     @contextmanager
-    def mongo_collection(cls) -> Collection:
+    def sql_session(cls) -> Collection:
         """
         Yield a connection
         """
-        with Session(cls.Config.sql_dsn) as session:
+        engine = create_engine(cls.Config.sql_dsn)
+        with Session(engine) as session:
             yield session
 
     @classmethod
@@ -37,7 +40,7 @@ class SQLLog(BaseLog):
         """
         Get object from DataBase
         """
-        with cls.mongo_collection() as collection:
+        with cls.sql_session() as collection:
             if task := collection.find_one({"uuid": uuid}):
                 return cls(**task)
 
@@ -46,7 +49,7 @@ class SQLLog(BaseLog):
         Updates object in DataBase
         """
         self.updated = datetime.utcnow()
-        with self.mongo_collection() as collection:
+        with self.sql_session() as collection:
             collection.update_one(
                 filter={"uuid": self.uuid},
                 update={"$set": self.dict()},
@@ -58,7 +61,7 @@ class SQLLog(BaseLog):
         """
         Deletes object in DataBase
         """
-        with self.mongo_collection() as collection:
+        with self.sql_session() as collection:
             deleted = collection.delete_one({"uuid": self.uuid})
             return deleted.deleted_count
 

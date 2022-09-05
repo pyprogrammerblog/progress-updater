@@ -7,7 +7,7 @@ from pymongo.collection import Collection
 from contextlib import contextmanager
 from pymongo.mongo_client import MongoClient
 
-__all__ = ["RedisLog"]
+__all__ = ["RedisLog", "RedisConfig"]
 
 
 logger = logging.getLogger(__name__)

@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from progress_updater.backends.base import BaseLog
 from pymongo.mongo_client import MongoClient
 
-__all__ = ["MongoLog"]
+__all__ = ["MongoLog", "MongoConfig"]
 
 
 logger = logging.getLogger(__name__)
