@@ -1,22 +1,27 @@
 import logging
 from datetime import datetime
 from uuid import UUID
-from progress_updater.backends import BaseConfig
-from progress_updater.backends.base import BaseLog
+from updater.backends import BaseConfig
 from pymongo.collection import Collection
 from contextlib import contextmanager
+from updater.backends.base import BaseLog
 from pymongo.mongo_client import MongoClient
 
-__all__ = ["RedisLog", "RedisConfig"]
+__all__ = ["MongoLog", "MongoConfig"]
 
 
 logger = logging.getLogger(__name__)
 
 
-class RedisLog(BaseLog):
+class MongoLog(BaseLog):
     """
     Mongo DB Adapter
     """
+
+    class Meta:
+        mongo_connection: str
+        mongo_db_name: str
+        mongo_collection: str
 
     @classmethod
     @contextmanager
@@ -24,9 +29,15 @@ class RedisLog(BaseLog):
         """
         Yield a connection
         """
-        with MongoClient(db_conn, UuidRepresentation="standard") as client:
-            db = client.get_database(db_name)
-            collection = db.get_collection(db_collection)
+        assert cls.Meta.mongo_connection, "Please set a db connection"
+        assert cls.Meta.mongo_db_name, "Please set a db name"
+        assert cls.Meta.mongo_collection, "Please set a db collection"
+
+        with MongoClient(
+            cls.Meta.mongo_connection, UuidRepresentation="standard"
+        ) as client:
+            db = client.get_database(cls.Meta.mongo_db_name)
+            collection = db.get_collection(cls.Meta.mongo_collection)
             yield collection
 
     @classmethod
@@ -60,14 +71,13 @@ class RedisLog(BaseLog):
             return deleted.deleted_count
 
 
-class RedisConfig(BaseConfig):
-
-    redis_host: str
-    redis_db: int
-    redis_password: str
+class MongoConfig(BaseConfig):
+    mongo_connection: str
+    mongo_db_name: str
+    mongo_collection: str
 
     def backend(self):
-        RedisLog.Config.redis_host = self.redis_host
-        RedisLog.Config.redis_db = self.redis_db
-        RedisLog.Config.redis_password = self.redis_password
-        return RedisLog
+        MongoLog.Config.mongo_connection = self.mongo_connection
+        MongoLog.Config.mongo_db_name = self.mongo_db_name
+        MongoLog.Config.mongo_collection = self.mongo_collection
+        return MongoLog

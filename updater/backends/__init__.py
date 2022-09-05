@@ -1,7 +1,7 @@
 from pydantic import BaseSettings
-from progress_updater.backends.redis import RedisConfig
-from progress_updater.backends.mongo import MongoConfig
-from progress_updater.backends.sql import SQLConfig
+from updater.backends.redis import RedisConfig
+from updater.backends.mongo import MongoConfig
+from updater.backends.sql import SQLConfig
 
 
 class BaseConfig(BaseSettings):

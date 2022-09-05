@@ -1,8 +1,8 @@
 import functools
-from progress_updater.updater import ProgressUpdater
-from progress_updater.backends.mongo import MongoConfig
-from progress_updater.backends.redis import RedisConfig
-from progress_updater.backends.sql import SQLConfig
+from updater.updater import ProgressUpdater
+from updater.backends.mongo import MongoConfig
+from updater.backends.redis import RedisConfig
+from updater.backends.sql import SQLConfig
 
 
 def progress_updater(

@@ -1,46 +1,40 @@
 import logging
-from progress_updater.backends import BaseConfig
 from datetime import datetime
 from uuid import UUID
-from progress_updater.backends.base import BaseLog
+from updater.backends import BaseConfig
+from updater.backends.base import BaseLog
 from pymongo.collection import Collection
 from contextlib import contextmanager
-from sqlalchemy import create_engine
-from sqlmodel import Session
+from pymongo.mongo_client import MongoClient
 
-
-__all__ = ["SQLLog", "SQLConfig"]
+__all__ = ["RedisLog", "RedisConfig"]
 
 
 logger = logging.getLogger(__name__)
 
 
-class SQLLog(BaseLog):
+class RedisLog(BaseLog):
     """
     Mongo DB Adapter
     """
 
-    class Config:
-        sql_dsn: str
-        sql_db_name: str
-        sql_table_name: str
-
     @classmethod
     @contextmanager
-    def sql_session(cls) -> Collection:
+    def mongo_collection(cls) -> Collection:
         """
         Yield a connection
         """
-        engine = create_engine(cls.Config.sql_dsn)
-        with Session(engine) as session:
-            yield session
+        with MongoClient(db_conn, UuidRepresentation="standard") as client:
+            db = client.get_database(db_name)
+            collection = db.get_collection(db_collection)
+            yield collection
 
     @classmethod
     def get(cls, uuid: UUID):
         """
         Get object from DataBase
         """
-        with cls.sql_session() as collection:
+        with cls.mongo_collection() as collection:
             if task := collection.find_one({"uuid": uuid}):
                 return cls(**task)
 
@@ -49,7 +43,7 @@ class SQLLog(BaseLog):
         Updates object in DataBase
         """
         self.updated = datetime.utcnow()
-        with self.sql_session() as collection:
+        with self.mongo_collection() as collection:
             collection.update_one(
                 filter={"uuid": self.uuid},
                 update={"$set": self.dict()},
@@ -61,18 +55,19 @@ class SQLLog(BaseLog):
         """
         Deletes object in DataBase
         """
-        with self.sql_session() as collection:
+        with self.mongo_collection() as collection:
             deleted = collection.delete_one({"uuid": self.uuid})
             return deleted.deleted_count
 
 
-class SQLConfig(BaseConfig):
-    updater_sql_dsn: str
-    updater_sql_db_name: str
-    updater_sql_table_name: str
+class RedisConfig(BaseConfig):
+
+    redis_host: str
+    redis_db: int
+    redis_password: str
 
     def backend(self):
-        SQLLog.Config.db_connection = self.updater_sql_dsn
-        SQLLog.Config.db_name = self.updater_sql_db_name
-        SQLLog.Config.db_table = self.updater_sql_table_name
-        return SQLLog
+        RedisLog.Config.redis_host = self.redis_host
+        RedisLog.Config.redis_db = self.redis_db
+        RedisLog.Config.redis_password = self.redis_password
+        return RedisLog

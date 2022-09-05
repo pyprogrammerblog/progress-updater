@@ -1,9 +1,9 @@
 import datetime
 from uuid import UUID, uuid4
-from progress_updater.backends import Config
-from progress_updater.backends.mongo import MongoConfig
-from progress_updater.backends.redis import RedisConfig
-from progress_updater.backends.sql import SQLConfig
+from updater.backends import Config
+from updater.backends.mongo import MongoConfig
+from updater.backends.redis import RedisConfig
+from updater.backends.sql import SQLConfig
 from typing import Tuple, Optional, NoReturn
 
 
