@@ -16,7 +16,7 @@ class Base(BaseModel):
         raise NotImplementedError
 
 
-class Settings(Base, BaseSettings):
+class Settings(BaseSettings):
     """
     Config
     """
