@@ -50,7 +50,9 @@ from updater import ProgressUpdater
 from updater.backends.redis import RedisSettings
 
 redis_settings = RedisSettings(redis_password="pass")
-updater = ProgressUpdater(task_name="task", settings=redis_settings)
+
+with ProgressUpdater(task_name="task", settings=redis_settings) as updater:
+    ...
 ```
 2. Environment variables. 
 The `PU__` prefix indicates that is for the `ProgressUpdater`.
