@@ -21,30 +21,31 @@ Basic usage
 ---------------
 
 ```python
-from progress_updater import ProgressUpdater
+from updater import ProgressUpdater
 
-updater = ProgressUpdater(task_name="Progress Updater")
+updater = ProgressUpdater(task_name="My Task")
 
 with updater(task_name="First part") as updater:
-    updater.notify("starting...")
-    pass
+    # doing things
+    updater.notify("doing first part...")
+    # doing more things
 
 with updater(task_name="Second part"):
-    pass
+    # doing things
+    updater.notify("doing second part...")
+    # doing more things
 
 updater.raise_latest_exception()
 ```
 
-Credentials
-----------------------
+Settings
+----------
 
-1. Passing credentials as parameters in the boto.client() method
-2. Passing credentials as parameters when creating a Session object
-3. Environment variables
-4. Shared credential file (~/.aws/credentials)
-5. AWS config file (~/.aws/config)
-6. Assume Role provider
-7. Boto2 config file (/etc/boto.cfg and ~/.boto)
+There are three ways to passing settings to the updater.
+
+1. Passing settings as parameters when creating a ```ProgressUpdater``` object.
+2. Environment variables
+3. Env file (~/.env)
 
 
 Documentation

@@ -1,5 +1,5 @@
 import logging
-from updater.backends import BaseConfig
+from updater.backends import Base
 from datetime import datetime
 from uuid import UUID
 from updater.backends.base import BaseLog
@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 from sqlmodel import Session
 
 
-__all__ = ["SQLLog", "SQLConfig"]
+__all__ = ["SQLLog", "SQLSettings"]
 
 
 logger = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ class SQLLog(BaseLog):
             return deleted.deleted_count
 
 
-class SQLConfig(BaseConfig):
+class SQLSettings(Base):
     updater_sql_dsn: str
     updater_sql_db_name: str
     updater_sql_table_name: str

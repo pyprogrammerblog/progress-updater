@@ -1,12 +1,12 @@
 import functools
 from updater.updater import ProgressUpdater
-from updater.backends.mongo import MongoConfig
-from updater.backends.redis import RedisConfig
-from updater.backends.sql import SQLConfig
+from updater.backends.mongo import MongoSettings
+from updater.backends.redis import RedisSettings
+from updater.backends.sql import SQLSettings
 
 
 def progress_updater(
-    config: MongoConfig | RedisConfig | SQLConfig = None,
+    config: MongoSettings | RedisSettings | SQLSettings = None,
     task_name: str = None,
     verbose: bool = True,
     suppress_exception: bool = True,
@@ -14,7 +14,7 @@ def progress_updater(
     """
     Task Updater Decorator
 
-    >>> from progress_updater.utils import progress_updater
+    >>> from updater.utils import progress_updater
     >>>
     >>> @progress_updater
     >>> def task():

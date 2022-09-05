@@ -1,9 +1,9 @@
 import datetime
 from uuid import UUID, uuid4
-from updater.backends import Config
-from updater.backends.mongo import MongoConfig
-from updater.backends.redis import RedisConfig
-from updater.backends.sql import SQLConfig
+from updater.backends import Settings
+from updater.backends.mongo import MongoSettings
+from updater.backends.redis import RedisSettings
+from updater.backends.sql import SQLSettings
 from typing import Tuple, Optional, NoReturn
 
 
@@ -22,7 +22,7 @@ class ProgressUpdater:
         uuid: UUID = None,
         suppress_exception: bool = True,
         verbose: bool = True,
-        config: MongoConfig | RedisConfig | SQLConfig = None,
+        settings: MongoSettings | RedisSettings | SQLSettings = None,
     ):
         self.uuid: UUID = uuid or uuid4()
         self.task_name: str = task_name
@@ -30,8 +30,8 @@ class ProgressUpdater:
         self.exception: Optional[Tuple] = None
         self.suppress_exception: bool = suppress_exception
 
-        config = config or Config()
-        self.log = config.backend()(uuid=uuid, task_name=task_name)
+        settings = settings or Settings()
+        self.log = settings.backend()(uuid=uuid, task_name=task_name)
 
     def __enter__(self, task_name: str = None) -> "ProgressUpdater":
         self.task_name = task_name or "..."

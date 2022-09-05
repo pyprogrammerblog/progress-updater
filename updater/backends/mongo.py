@@ -1,13 +1,13 @@
 import logging
 from datetime import datetime
 from uuid import UUID
-from updater.backends import BaseConfig
+from updater.backends import Base
 from pymongo.collection import Collection
 from contextlib import contextmanager
 from updater.backends.base import BaseLog
 from pymongo.mongo_client import MongoClient
 
-__all__ = ["MongoLog", "MongoConfig"]
+__all__ = ["MongoLog", "MongoSettings"]
 
 
 logger = logging.getLogger(__name__)
@@ -71,7 +71,7 @@ class MongoLog(BaseLog):
             return deleted.deleted_count
 
 
-class MongoConfig(BaseConfig):
+class MongoSettings(Base):
     mongo_connection: str
     mongo_db_name: str
     mongo_collection: str

@@ -1,13 +1,13 @@
 import logging
 from datetime import datetime
 from uuid import UUID
-from updater.backends import BaseConfig
+from updater.backends import Base
 from updater.backends.base import BaseLog
 from pymongo.collection import Collection
 from contextlib import contextmanager
 from pymongo.mongo_client import MongoClient
 
-__all__ = ["RedisLog", "RedisConfig"]
+__all__ = ["RedisLog", "RedisSettings"]
 
 
 logger = logging.getLogger(__name__)
@@ -60,7 +60,7 @@ class RedisLog(BaseLog):
             return deleted.deleted_count
 
 
-class RedisConfig(BaseConfig):
+class RedisSettings(Base):
 
     redis_host: str
     redis_db: int
