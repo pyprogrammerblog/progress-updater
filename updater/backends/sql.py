@@ -1,4 +1,5 @@
 import logging
+from typing import Dict
 from updater.backends import Base
 from datetime import datetime
 from uuid import UUID
@@ -22,8 +23,7 @@ class SQLLog(BaseLog):
 
     class Config:
         sql_dsn: str
-        sql_db_name: str
-        sql_table_name: str
+        sql_table: str
 
     @classmethod
     @contextmanager
@@ -67,12 +67,11 @@ class SQLLog(BaseLog):
 
 
 class SQLSettings(Base):
-    updater_sql_dsn: str
-    updater_sql_db_name: str
-    updater_sql_table_name: str
+    sql_dsn: str
+    sql_table: str
+    sql_extras: Dict = None
 
     def backend(self):
-        SQLLog.Config.db_connection = self.updater_sql_dsn
-        SQLLog.Config.db_name = self.updater_sql_db_name
-        SQLLog.Config.db_table = self.updater_sql_table_name
+        SQLLog.Config.sql_dsn = self.sql_dsn
+        SQLLog.Config.sql_table = self.sql_table
         return SQLLog

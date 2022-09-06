@@ -1,4 +1,5 @@
 import logging
+from typing import Dict
 from datetime import datetime
 from uuid import UUID
 from updater.backends import Base
@@ -65,6 +66,7 @@ class RedisSettings(Base):
     redis_host: str = "localhost"
     redis_db: int = 1
     redis_password: str
+    redis_extras: Dict = None
 
     def backend(self):
         RedisLog.Config.redis_host = self.redis_host

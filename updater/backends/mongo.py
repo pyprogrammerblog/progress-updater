@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from uuid import UUID
+from typing import Dict
 from updater.backends import Base
 from pymongo.collection import Collection
 from contextlib import contextmanager
@@ -75,6 +76,7 @@ class MongoSettings(Base):
     mongo_connection: str
     mongo_db_name: str
     mongo_collection: str
+    mongo_extras: Dict = None
 
     def backend(self):
         MongoLog.Config.mongo_connection = self.mongo_connection
