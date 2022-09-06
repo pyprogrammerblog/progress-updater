@@ -14,11 +14,11 @@ Installation
 Install it using ``pip``
 
 ```shell
-pip install task-updater
+pip install progress-updater
 ```
 
 Basic usage
----------------
+-------------
 
 ```python
 from updater import ProgressUpdater
@@ -28,16 +28,25 @@ updater = ProgressUpdater(task_name="My Task")
 
 with updater(block_name="First part") as updater:
     # doing things
-    updater.notify("doing first part...")
+    updater.notify("doing first block...")
     # doing more things
 
 with updater(block_name="Second part"):
     # doing things
-    updater.notify("doing second part...")
+    updater.notify("doing second block...")
     # doing more things
 
 updater.raise_latest_exception()
 ```
+
+Backends
+----------
+There are three backends available to save our logs.
+
+1. Mongo. See [documentation]().
+2. Redis. See [documentation]().
+3. SQL. See [documentation]().
+
 
 Settings
 ----------
