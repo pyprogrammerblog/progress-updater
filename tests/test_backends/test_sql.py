@@ -38,7 +38,9 @@ def test_create_settings_env_vars_sql(sql_backend, env_vars_sql):
     klass = settings.backend()
     log: SQLLog = klass(task_name="My task")
 
-    assert not sql_backend.query(SQLLog).filter_by(uuid=log.uuid)
+    assert not sql_backend.exec(
+        select(SQLLog).where(SQLLog.uuid == log.uuid)
+    ).first()
 
     log.description = "A description"
     log = log.save()
@@ -46,6 +48,11 @@ def test_create_settings_env_vars_sql(sql_backend, env_vars_sql):
 
     assert log.description == "A description"
     assert isinstance(log.uuid, uuid.UUID)
-    assert sql_backend.query(SQLLog).filter_by(uuid=log.uuid)
+    assert sql_backend.exec(
+        select(SQLLog).where(SQLLog.uuid == log.uuid)
+    ).first()
     assert 1 == log.delete()
-    assert not sql_backend.query(SQLLog).filter_by(uuid=log.uuid)
+    assert not sql_backend.exec(
+        select(SQLLog).where(SQLLog.uuid == log.uuid)
+    ).first()
+    assert 0 == log.delete()

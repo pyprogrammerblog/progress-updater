@@ -64,8 +64,12 @@ class SQLLog(Log, SQLModel, table=True):  # type: ignore
         Deletes object in DataBase
         """
         with self.sql_session() as session:
-            session.delete(self)
-            session.commit()
+            statement = select(SQLLog).where(self.uuid == self.uuid)
+            if task := session.exec(statement).first():
+                session.delete(task)
+                session.commit()
+                return 1
+            return 0
 
 
 class SQLSettings(BaseModel):
