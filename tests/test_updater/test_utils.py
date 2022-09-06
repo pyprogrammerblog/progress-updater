@@ -32,7 +32,7 @@ def test_progress_updater_passing_params_mongo(mongo_backend):
     )
 
 
-def test_progress_updater_passing_params_sql(sql):
+def test_progress_updater_passing_params_sql(sql_backend):
 
     sql_settings = SQLSettings(
         sql_dsn="postgresql+psycopg2://user:pass@postgres:5432/db",
@@ -67,7 +67,7 @@ def test_progress_updater_env_vars_mongo(mongo_backend, env_vars_mongo):
     )
 
 
-def test_progress_updater_env_vars_sql(env_vars_sql):
+def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql):
     settings = Settings()
     klass = settings.backend()
     assert klass == SQLLog
