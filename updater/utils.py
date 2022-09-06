@@ -6,7 +6,7 @@ from updater.backends.sql import SQLSettings
 
 
 def progress_updater(
-    config: MongoSettings | RedisSettings | SQLSettings = None,
+    settings: MongoSettings | RedisSettings | SQLSettings = None,
     task_name: str = None,
     verbose: bool = True,
     suppress_exception: bool = True,
@@ -30,7 +30,7 @@ def progress_updater(
                 task_name=task_name or func.name,
                 suppress_exception=suppress_exception,
                 verbose=verbose,
-                config=config,
+                settings=settings,
             ) as task_updater:
                 func(*args, **kwargs)
             task_updater.raise_latest_exception()
