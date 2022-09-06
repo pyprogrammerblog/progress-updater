@@ -1,12 +1,11 @@
 import logging
 from typing import Dict
+from sqlmodel import Session, SQLModel, create_engine, select, Field
 from updater.backends import Base
 from datetime import datetime
-from uuid import UUID
+from uuid import UUID, uuid4
 from updater.backends.base import BaseLog
 from contextlib import contextmanager
-from sqlalchemy import create_engine
-from sqlmodel import Session
 
 
 __all__ = ["SQLLog", "SQLSettings"]
@@ -15,10 +14,12 @@ __all__ = ["SQLLog", "SQLSettings"]
 logger = logging.getLogger(__name__)
 
 
-class SQLLog(BaseLog):
+class SQLLog(SQLModel, BaseLog, table=True):
     """
-    Mongo DB Adapter
+    SQL Log
     """
+
+    uuid: UUID = Field(default_factory=uuid4, primary_key=True)
 
     class Meta:
         sql_dsn: str
@@ -40,7 +41,8 @@ class SQLLog(BaseLog):
         Get object from DataBase
         """
         with cls.sql_session() as session:
-            if task := session.query(SQLLog).get():
+            statement = select(cls).where(cls.uuid == uuid)
+            if task := session.exec(statement).first():
                 return task
 
     def save(self):
@@ -48,21 +50,18 @@ class SQLLog(BaseLog):
         Updates object in DataBase
         """
         self.updated = datetime.utcnow()
-        with self.sql_session() as collection:
-            collection.update_one(
-                filter={"uuid": self.uuid},
-                update={"$set": self.dict()},
-                upsert=True,
-            )
+        with self.sql_session() as session:
+            session.add(self)
+            session.commit()
         return self
 
-    def delete(self) -> int:
+    def delete(self):
         """
         Deletes object in DataBase
         """
-        with self.sql_session() as collection:
-            deleted = collection.delete_one({"uuid": self.uuid})
-            return deleted.deleted_count
+        with self.sql_session() as session:
+            session.delete(self)
+            session.commit()
 
 
 class SQLSettings(Base):
