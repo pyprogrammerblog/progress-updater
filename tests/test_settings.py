@@ -48,7 +48,11 @@ def test_create_settings_env_vars_mongo(env_vars_mongo):
     settings = Settings()
     klass = settings.backend()
     assert klass == MongoLog
-    assert klass.Meta.mongo_connection == MongoLog.Meta.mongo_connection == "mongodb://user:pass@mongo:27017"
+    assert (
+        klass.Meta.mongo_connection
+        == MongoLog.Meta.mongo_connection
+        == "mongodb://user:pass@mongo:27017"
+    )
 
 
 def test_create_settings_env_vars_sql(env_vars_sql):
@@ -56,6 +60,7 @@ def test_create_settings_env_vars_sql(env_vars_sql):
     klass = settings.backend()
     assert klass == SQLLog
     assert (
-        klass.Meta.sql_dsn == SQLLog.Meta.sql_dsn
+        klass.Meta.sql_dsn
+        == SQLLog.Meta.sql_dsn
         == "postgresql+psycopg2://user:pass@postgres:5432/db"
     )
