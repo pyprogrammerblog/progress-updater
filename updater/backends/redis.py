@@ -1,12 +1,11 @@
 import logging
+import redis
 from typing import Dict
 from datetime import datetime
 from uuid import UUID
 from updater.backends import Base
 from updater.backends.base import BaseLog
-from pymongo.collection import Collection
 from contextlib import contextmanager
-from pymongo.mongo_client import MongoClient
 
 __all__ = ["RedisLog", "RedisSettings"]
 
@@ -19,57 +18,65 @@ class RedisLog(BaseLog):
     Mongo DB Adapter
     """
 
+    class Meta:
+        redis_host: str
+        redis_port: int
+        redis_db: int
+        redis_password: str
+        redis_extras: Dict
+
     @classmethod
     @contextmanager
-    def mongo_collection(cls) -> Collection:
+    def redis_connection(cls) -> redis.Redis:
         """
-        Yield a connection
+        Yield a redis connection
         """
-        with MongoClient(db_conn, UuidRepresentation="standard") as client:
-            db = client.get_database(db_name)
-            collection = db.get_collection(db_collection)
-            yield collection
+        with redis.Redis(
+            host=cls.Meta.redis_host,
+            port=cls.Meta.redis_port,
+            db=cls.Meta.redis_db,
+            password=cls.Meta.redis_password,
+            **cls.Meta.redis_extras,
+        ) as r:
+            yield r
 
     @classmethod
     def get(cls, uuid: UUID):
         """
-        Get object from DataBase
+        Get object from Redis
         """
-        with cls.mongo_collection() as collection:
-            if task := collection.find_one({"uuid": uuid}):
-                return cls(**task)
+        with cls.redis_connection() as r:
+            if task := r.get(str(uuid)):
+                return cls.parse_raw(task)
 
     def save(self):
         """
-        Updates object in DataBase
+        Updates object in Redis
         """
         self.updated = datetime.utcnow()
-        with self.mongo_collection() as collection:
-            collection.update_one(
-                filter={"uuid": self.uuid},
-                update={"$set": self.dict()},
-                upsert=True,
-            )
+        with self.redis_connection() as r:
+            r.set(str(self.uuid), self.json())
         return self
 
     def delete(self) -> int:
         """
         Deletes object in DataBase
         """
-        with self.mongo_collection() as collection:
-            deleted = collection.delete_one({"uuid": self.uuid})
-            return deleted.deleted_count
+        with self.redis_connection() as r:
+            return r.delete(str(self.uuid))
 
 
 class RedisSettings(Base):
 
     redis_host: str = "localhost"
+    redis_port: int = 12345
     redis_db: int = 1
     redis_password: str
-    redis_extras: Dict = None
+    redis_extras: Dict = {}
 
     def backend(self):
-        RedisLog.Config.redis_host = self.redis_host
-        RedisLog.Config.redis_db = self.redis_db
-        RedisLog.Config.redis_password = self.redis_password
+        RedisLog.Meta.redis_host = self.redis_host
+        RedisLog.Meta.redis_port = self.redis_port
+        RedisLog.Meta.redis_db = self.redis_db
+        RedisLog.Meta.redis_password = self.redis_password
         return RedisLog

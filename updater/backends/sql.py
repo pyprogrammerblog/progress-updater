@@ -20,7 +20,7 @@ class SQLLog(BaseLog):
     Mongo DB Adapter
     """
 
-    class Config:
+    class Meta:
         sql_dsn: str
         sql_table: str
 
@@ -30,7 +30,7 @@ class SQLLog(BaseLog):
         """
         Yield a connection
         """
-        engine = create_engine(cls.Config.sql_dsn)
+        engine = create_engine(cls.Meta.sql_dsn)
         with Session(engine) as session:
             yield session
 
@@ -71,6 +71,6 @@ class SQLSettings(Base):
     sql_extras: Dict = None
 
     def backend(self):
-        SQLLog.Config.sql_dsn = self.sql_dsn
-        SQLLog.Config.sql_table = self.sql_table
+        SQLLog.Meta.sql_dsn = self.sql_dsn
+        SQLLog.Meta.sql_table = self.sql_table
         return SQLLog
