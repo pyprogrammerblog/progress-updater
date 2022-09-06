@@ -22,9 +22,7 @@ class SQLLog(Log, SQLModel, table=True):  # type: ignore
 
     __tablename__ = "logs"
 
-    uuid: UUID = Field(
-        default_factory=uuid4, description="UUID", primary_key=True
-    )
+    uuid: UUID = Field(default_factory=uuid4, primary_key=True)
 
     class Meta:
         sql_dsn: str
@@ -46,7 +44,7 @@ class SQLLog(Log, SQLModel, table=True):  # type: ignore
         Get object from DataBase
         """
         with cls.sql_session() as session:
-            statement = select(cls).where(cls.uuid == uuid)
+            statement = select(cls).where(cls.uuid == str(uuid))
             if task := session.exec(statement).first():
                 return task
 
@@ -58,6 +56,7 @@ class SQLLog(Log, SQLModel, table=True):  # type: ignore
         with self.sql_session() as session:
             session.add(self)
             session.commit()
+            session.refresh(self)
         return self
 
     def delete(self):

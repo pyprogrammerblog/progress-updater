@@ -13,8 +13,9 @@ def test_create_settings_passing_params_sql(sql_backend):
     klass = sql_settings.backend()
     log: SQLLog = klass(task_name="My task")
 
-    statement = select(SQLLog).where(SQLLog.uuid == log.uuid)
-    assert not sql_backend.exec(statement).first()
+    assert not sql_backend.exec(
+        select(SQLLog).where(SQLLog.uuid == log.uuid)
+    ).first()
 
     log.description = "A description"
     log = log.save()
@@ -22,10 +23,13 @@ def test_create_settings_passing_params_sql(sql_backend):
 
     assert log.description == "A description"
     assert isinstance(log.uuid, uuid.UUID)
-    assert sql_backend.query(SQLLog).filter_by(uuid=log.uuid)
-    assert 1 == log.delete()
-    assert not sql_backend.query(SQLLog).filter_by(uuid=log.uuid)
-    assert 0 == log.delete()
+    assert sql_backend.exec(
+        select(SQLLog).where(SQLLog.uuid == log.uuid)
+    ).first()
+    log.delete()
+    assert not sql_backend.exec(
+        select(SQLLog).where(SQLLog.uuid == log.uuid)
+    ).first()
 
 
 def test_create_settings_env_vars_sql(sql_backend, env_vars_sql):
@@ -45,4 +49,3 @@ def test_create_settings_env_vars_sql(sql_backend, env_vars_sql):
     assert sql_backend.query(SQLLog).filter_by(uuid=log.uuid)
     assert 1 == log.delete()
     assert not sql_backend.query(SQLLog).filter_by(uuid=log.uuid)
-    assert 0 == log.delete()
