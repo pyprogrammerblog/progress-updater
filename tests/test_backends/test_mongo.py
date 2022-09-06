@@ -23,6 +23,8 @@ def test_create_settings_passing_params_mongo(drop_mongo):
 
     log.description = "A description"
     log = log.save()
+
+    log = MongoLog.get(uuid=log.uuid)
     assert log.description == "A description"
     assert isinstance(log.uuid, uuid.UUID)
 
@@ -33,7 +35,7 @@ def test_create_settings_passing_params_mongo(drop_mongo):
         collection = db.get_collection("logs")
         assert 1 == collection.count_documents(filter={})
 
-    log.delete()
+    assert 1 == log.delete()
 
     with MongoClient(
         "mongodb://user:pass@mongo:27017", UuidRepresentation="standard"
@@ -41,6 +43,8 @@ def test_create_settings_passing_params_mongo(drop_mongo):
         db = client.get_database("db")
         collection = db.get_collection("logs")
         assert 0 == collection.count_documents(filter={})
+
+    assert 0 == log.delete()
 
 
 def test_create_settings_env_vars_mongo(drop_mongo, env_vars_mongo):
@@ -58,6 +62,8 @@ def test_create_settings_env_vars_mongo(drop_mongo, env_vars_mongo):
 
     log.description = "A description"
     log = log.save()
+
+    log = MongoLog.get(uuid=log.uuid)
     assert log.description == "A description"
     assert isinstance(log.uuid, uuid.UUID)
 
@@ -68,7 +74,7 @@ def test_create_settings_env_vars_mongo(drop_mongo, env_vars_mongo):
         collection = db.get_collection("logs")
         assert 1 == collection.count_documents(filter={})
 
-    log.delete()
+    assert 1 == log.delete()
 
     with MongoClient(
         "mongodb://user:pass@mongo:27017", UuidRepresentation="standard"
@@ -76,3 +82,5 @@ def test_create_settings_env_vars_mongo(drop_mongo, env_vars_mongo):
         db = client.get_database("db")
         collection = db.get_collection("logs")
         assert 0 == collection.count_documents(filter={})
+
+    assert 0 == log.delete()

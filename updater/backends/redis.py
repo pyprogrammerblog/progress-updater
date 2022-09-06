@@ -68,8 +68,8 @@ class RedisLog(Log):
 
 class RedisSettings(BaseModel):
 
-    redis_host: str = "localhost"
-    redis_port: int = 12345
+    redis_host: str
+    redis_port: int = 6379
     redis_db: int = 1
     redis_password: str
     redis_extras: Dict = {}
@@ -79,4 +79,5 @@ class RedisSettings(BaseModel):
         RedisLog.Meta.redis_port = self.redis_port
         RedisLog.Meta.redis_db = self.redis_db
         RedisLog.Meta.redis_password = self.redis_password
+        RedisLog.Meta.redis_extras = self.redis_extras
         return RedisLog

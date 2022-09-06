@@ -7,7 +7,7 @@ from updater.backends.redis import RedisSettings, RedisLog
 # passing params
 def test_create_settings_passing_params_redis():
 
-    redis_settings = RedisSettings(redis_password="pass")
+    redis_settings = RedisSettings(redis_password="pass", redis_host="redis")
     settings = Settings(pu=redis_settings)
     klass = settings.backend()
     assert issubclass(klass, RedisLog)

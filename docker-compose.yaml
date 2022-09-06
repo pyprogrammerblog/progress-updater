@@ -4,6 +4,8 @@ services:
   redis:
     image: redis:4.0.9-alpine
     command: redis-server --requirepass 'pass'
+    ports:
+      - "6379:6379"
 
   mongo:
     image: mongo:latest
@@ -11,7 +13,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=user
       - MONGO_INITDB_ROOT_PASSWORD=pass
     ports:
-      - 27017:27017
+      - "27017:27017"
 
   postgres:
     image: postgres:latest

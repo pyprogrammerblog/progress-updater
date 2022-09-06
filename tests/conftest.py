@@ -1,5 +1,6 @@
 import os
 import pytest
+import redis
 from pymongo import MongoClient
 
 
@@ -42,7 +43,7 @@ def env_vars_sql():
         del os.environ["PU__SQL_TABLE"]
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def drop_mongo():
     with MongoClient(
         "mongodb://user:pass@mongo:27017", UuidRepresentation="standard"
@@ -50,3 +51,11 @@ def drop_mongo():
         client.drop_database("db")
         yield
         client.drop_database("db")
+
+
+@pytest.fixture(scope="function")
+def drop_redis():
+    with redis.Redis(host="redis", password="pass", port=6379, db=1) as r:
+        r.flushdb()
+        yield
+        r.flushdb()
