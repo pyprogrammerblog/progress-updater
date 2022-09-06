@@ -51,7 +51,7 @@ There are three backends available to save our logs.
 Settings
 ----------
 
-There are three possible ways to pass settings to the updater. 
+There are some possible ways to pass settings to the updater. 
 This is the priority.
 
 1. Passing settings as parameters when creating a `ProgressUpdater` object.
@@ -69,14 +69,6 @@ The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell
 export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
 export PU__SQL_TABLE=logs
-```
-
-3. Env file (~/.env)
-The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
-```shell
-PU__MONGO_CONNECTION=mongodb://user:pass@mongo:27017
-PU__MONGO_DB=db
-PU__MONGO_COLLECTION=logs
 ```
 
 
