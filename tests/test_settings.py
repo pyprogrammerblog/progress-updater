@@ -11,6 +11,7 @@ def test_create_settings_passing_params_redis():
     settings = Settings(pu=redis_settings)
     klass = settings.backend()
     assert issubclass(klass, RedisLog)
+    assert klass.Meta.redis_password == RedisLog.Meta.redis_password == "pass"
 
 
 def test_create_settings_passing_params_mongo():
@@ -23,6 +24,11 @@ def test_create_settings_passing_params_mongo():
     settings = Settings(pu=mongo_settings)
     klass = settings.backend()
     assert issubclass(klass, MongoLog)
+    assert (
+        klass.Meta.mongo_connection
+        == MongoLog.Meta.mongo_connection
+        == "mongodb://user:pass@mongo:27017"
+    )
 
 
 def test_create_settings_passing_params_sql():
@@ -34,6 +40,11 @@ def test_create_settings_passing_params_sql():
     settings = Settings(pu=sql_settings)
     klass = settings.backend()
     assert issubclass(klass, SQLLog)
+    assert (
+        klass.Meta.sql_dsn
+        == SQLLog.Meta.sql_dsn
+        == "postgresql+psycopg2://user:pass@postgres:5432/db"
+    )
 
 
 # env vars
