@@ -1,19 +1,7 @@
-from pydantic import BaseSettings, BaseModel
+from pydantic import BaseSettings
 from updater.backends.redis import RedisSettings
 from updater.backends.mongo import MongoSettings
 from updater.backends.sql import SQLSettings
-
-
-class Base(BaseModel):
-    """
-    Base Settings
-    """
-
-    def backend(self):
-        """
-        Return the backend Log class
-        """
-        raise NotImplementedError
 
 
 class Settings(BaseSettings):
@@ -24,8 +12,8 @@ class Settings(BaseSettings):
     pu: RedisSettings | MongoSettings | SQLSettings
 
     class Config:
-        env_file = "~/.env"
-        env_file_encoding = "utf-8"
+        # env_file = "~/.env"
+        # env_file_encoding = "utf-8"
         env_nested_delimiter = "__"
 
     def backend(self):

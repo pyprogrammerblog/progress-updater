@@ -1,10 +1,10 @@
 import logging
 from typing import Dict
 from sqlmodel import Session, SQLModel, create_engine, select, Field
-from updater.backends import Base
+from pydantic import BaseModel
 from datetime import datetime
 from uuid import UUID, uuid4
-from updater.backends.base import BaseLog
+from updater.backends.log import Log
 from contextlib import contextmanager
 
 
@@ -14,12 +14,10 @@ __all__ = ["SQLLog", "SQLSettings"]
 logger = logging.getLogger(__name__)
 
 
-class SQLLog(SQLModel, BaseLog, table=True):
+class SQLLog(Log, SQLModel):
     """
     SQL Log
     """
-
-    uuid: UUID = Field(default_factory=uuid4, primary_key=True)
 
     class Meta:
         sql_dsn: str
@@ -64,9 +62,9 @@ class SQLLog(SQLModel, BaseLog, table=True):
             session.commit()
 
 
-class SQLSettings(Base):
+class SQLSettings(BaseModel):
     sql_dsn: str
-    sql_table: str
+    sql_table: str = "Logs"
     sql_extras: Dict = None
 
     def backend(self):

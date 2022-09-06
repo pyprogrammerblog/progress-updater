@@ -25,7 +25,7 @@ class Status:
     SUCCESS: str = "SUCCESS"
 
 
-class BaseLog(BaseModel):
+class Log(BaseModel):
     """
     Defines the log written to DB
     """
@@ -45,5 +45,5 @@ class BaseLog(BaseModel):
 
 
 class Logs(BaseModel):
-    logs: List[BaseLog] = Field(default_factory=list, description="Logs")
+    logs: List[Log] = Field(default_factory=list, description="Logs")
     count: int = Field(default=0, description="Count")

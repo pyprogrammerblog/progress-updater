@@ -3,8 +3,8 @@ import redis
 from typing import Dict
 from datetime import datetime
 from uuid import UUID
-from updater.backends import Base
-from updater.backends.base import BaseLog
+from pydantic import BaseModel
+from updater.backends.log import Log
 from contextlib import contextmanager
 
 __all__ = ["RedisLog", "RedisSettings"]
@@ -13,7 +13,7 @@ __all__ = ["RedisLog", "RedisSettings"]
 logger = logging.getLogger(__name__)
 
 
-class RedisLog(BaseLog):
+class RedisLog(Log):
     """
     Mongo DB Adapter
     """
@@ -66,7 +66,7 @@ class RedisLog(BaseLog):
             return r.delete(str(self.uuid))
 
 
-class RedisSettings(Base):
+class RedisSettings(BaseModel):
 
     redis_host: str = "localhost"
     redis_port: int = 12345

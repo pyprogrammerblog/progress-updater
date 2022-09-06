@@ -1,11 +1,36 @@
 version: "3.3"
 services:
 
-  app:
+  redis:
+    image: redis:4.0.9-alpine
+    command: redis-server --requirepass 'pass'
+
+  mongo:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - 27017:27017
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+
+  updater:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: 'app'
+    container_name: updater
+    depends_on:
+      - redis
+      - postgres
+      - mongo
     environment:
       - DOCKER=True
       - PYTHONUNBUFFERED=1

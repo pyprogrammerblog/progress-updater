@@ -25,6 +25,7 @@ pymongo = "^4.2.0"
 sqlmodel = "^0.0.8"
 redis = "^4.3.4"
 types-redis = "^4.3.20"
+psycopg2 = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
