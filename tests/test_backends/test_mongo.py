@@ -1,5 +1,4 @@
 import uuid
-from pymongo import MongoClient
 from updater.backends import Settings
 from updater.backends.mongo import MongoSettings, MongoLog
 

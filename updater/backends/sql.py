@@ -1,9 +1,9 @@
 import logging
 from typing import Dict
-from sqlmodel import Session, SQLModel, create_engine, select, Field
+from sqlmodel import Session, SQLModel, create_engine, select
 from pydantic import BaseModel
 from datetime import datetime
-from uuid import UUID, uuid4
+from uuid import UUID
 from updater.backends.log import Log
 from contextlib import contextmanager
 

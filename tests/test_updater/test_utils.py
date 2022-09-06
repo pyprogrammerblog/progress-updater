@@ -14,8 +14,6 @@ def test_progress_updater_passing_params_redis(redis_backend):
 
     task()  # run the task
 
-    assert redis.get()
-
 
 def test_progress_updater_passing_params_mongo(mongo_backend):
 

@@ -59,5 +59,3 @@ def redis_backend():
         r.flushdb()
         yield r
         r.flushdb()
-
-

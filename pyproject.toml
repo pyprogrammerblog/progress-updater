@@ -36,6 +36,7 @@ notebook = "^6.4.12"
 mock = "^4.0.3"
 mypy = "^0.971"
 Sphinx = "^5.1.1"
+types-redis = "^4.3.20"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

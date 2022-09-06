@@ -1,5 +1,5 @@
 import logging
-import redis
+import redis  # type: ignore
 from typing import Dict
 from datetime import datetime
 from uuid import UUID
