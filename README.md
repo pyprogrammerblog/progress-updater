@@ -75,7 +75,7 @@ export PU__SQL_TABLE=logs
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell
 PU__MONGO_CONNECTION=mongodb://user:pass@mongo:27017
-PU__MONGO_DB_NAME=db
+PU__MONGO_DB=db
 PU__MONGO_COLLECTION=logs
 ```
 
