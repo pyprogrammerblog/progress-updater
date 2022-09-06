@@ -1,6 +1,5 @@
 import uuid
 import redis
-import json
 from updater.backends import Settings
 from updater.backends.redis import RedisLog, RedisSettings
 
