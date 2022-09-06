@@ -12,7 +12,7 @@ def test_progress_updater_passing_params_redis(redis):
     def task():
         return "doing a lot of work..."
 
-    task()
+    task()  # run the task
 
     assert redis.get()
 
