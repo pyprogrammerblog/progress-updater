@@ -4,7 +4,6 @@ from updater.backends import Base
 from datetime import datetime
 from uuid import UUID
 from updater.backends.base import BaseLog
-from pymongo.collection import Collection
 from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlmodel import Session
@@ -27,7 +26,7 @@ class SQLLog(BaseLog):
 
     @classmethod
     @contextmanager
-    def sql_session(cls) -> Collection:
+    def sql_session(cls) -> Session:
         """
         Yield a connection
         """
@@ -40,9 +39,9 @@ class SQLLog(BaseLog):
         """
         Get object from DataBase
         """
-        with cls.sql_session() as collection:
-            if task := collection.find_one({"uuid": uuid}):
-                return cls(**task)
+        with cls.sql_session() as session:
+            if task := session.query(SQLLog).get():
+                return task
 
     def save(self):
         """
