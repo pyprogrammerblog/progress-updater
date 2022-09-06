@@ -1,5 +1,6 @@
 import os
 import pytest
+from pymongo import MongoClient
 
 
 @pytest.fixture(scope="function")
@@ -39,3 +40,13 @@ def env_vars_sql():
     finally:
         del os.environ["PU__SQL_DSN"]
         del os.environ["PU__SQL_TABLE"]
+
+
+@pytest.fixture()
+def drop_mongo():
+    with MongoClient(
+        "mongodb://user:pass@mongo:27017", UuidRepresentation="standard"
+    ) as client:
+        client.drop_database("db")
+        yield
+        client.drop_database("db")

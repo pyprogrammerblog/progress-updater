@@ -34,6 +34,7 @@ class Log(BaseModel):
     task_name: str = Field(description="Task name")
     status: str = Field(default=Status.PENDING, description="Status")
     log: Optional[Any] = Field(default=None, description="Result")
+    description: str = Field(None, description="Description")
 
     start_time: Optional[datetime] = Field(
         default_factory=datetime.utcnow, description="Started"
