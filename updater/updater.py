@@ -22,6 +22,7 @@ class ProgressUpdater:
         uuid: UUID = None,
         suppress_exception: bool = True,
         verbose: bool = True,
+        write_on_backend: bool = True,
         settings: MongoSettings | RedisSettings | SQLSettings = None,
     ):
         self.uuid: UUID = uuid or uuid4()
@@ -29,15 +30,16 @@ class ProgressUpdater:
         self.verbose: bool = verbose
         self.exception: Optional[Tuple] = None
         self.suppress_exception: bool = suppress_exception
+        self.write_on_backend: bool = write_on_backend
 
-        settings = settings or Settings()
-        self.log = settings.backend()(uuid=uuid, task_name=task_name)
+        if write_on_backend:
+            settings = settings or Settings()
+            self.log = settings.backend()(uuid=uuid, task_name=task_name)
 
     def __enter__(self, block_name: str = None) -> "ProgressUpdater":
         self.block_name = block_name or "..."
         self.start_t = datetime.datetime.utcnow()
         self.notify(f"- Entering {self.block_name}")
-        self.log.save()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
@@ -50,7 +52,6 @@ class ProgressUpdater:
             self.exception = (exc_type, exc_val, exc_tb)
         else:
             self.notify("\tSuccessfully completed")
-        self.log.save()
         return self.suppress_exception
 
     def __call__(self, **kwargs) -> "ProgressUpdater":
@@ -64,8 +65,10 @@ class ProgressUpdater:
 
     def notify(self, message: str):
         msg = "\t" + message
-        self.log.log += f"{message}\n"
-        self.log.save()
+
+        if self.write_on_backend:
+            self.log.log += f"{message}\n"
+            self.log.save()
 
         if self.verbose:
             print(msg)
