@@ -5,7 +5,7 @@ from updater.backends.mongo import MongoSettings, MongoLog
 from updater.backends.redis import RedisSettings, RedisLog
 
 
-def test_progress_updater_passing_params_redis(redis):
+def test_progress_updater_passing_params_redis(redis_backend):
     redis_settings = RedisSettings(redis_password="pass")
 
     @progress_updater(task_name="My task", settings=redis_settings)
@@ -17,7 +17,7 @@ def test_progress_updater_passing_params_redis(redis):
     assert redis.get()
 
 
-def test_progress_updater_passing_params_mongo(mongo):
+def test_progress_updater_passing_params_mongo(mongo_backend):
 
     mongo_settings = MongoSettings(
         mongo_connection="mongodb://user:pass@mongo:27017",
@@ -51,14 +51,14 @@ def test_progress_updater_passing_params_sql(sql):
 
 
 # env vars
-def test_progress_updater_env_vars_redis(env_vars_redis):
+def test_progress_updater_env_vars_redis(redis_backend, env_vars_redis):
     settings = Settings()
     klass = settings.backend()
     assert klass == RedisLog
     assert klass.Meta.redis_password == RedisLog.Meta.redis_password == "pass"
 
 
-def test_progress_updater_env_vars_mongo(env_vars_mongo):
+def test_progress_updater_env_vars_mongo(mongo_backend, env_vars_mongo):
     settings = Settings()
     klass = settings.backend()
     assert klass == MongoLog

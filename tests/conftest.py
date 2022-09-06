@@ -44,18 +44,20 @@ def env_vars_sql():
 
 
 @pytest.fixture(scope="function")
-def drop_mongo():
+def mongo_backend():
     with MongoClient(
         "mongodb://user:pass@mongo:27017", UuidRepresentation="standard"
     ) as client:
         client.drop_database("db")
-        yield
+        yield client
         client.drop_database("db")
 
 
 @pytest.fixture(scope="function")
-def drop_redis():
+def redis_backend():
     with redis.Redis(host="redis", password="pass", port=6379, db=1) as r:
         r.flushdb()
-        yield
+        yield r
         r.flushdb()
+
+
