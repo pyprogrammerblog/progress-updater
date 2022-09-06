@@ -1,6 +1,9 @@
 import os
 import pytest
 import redis
+from sqlmodel import Session, create_engine
+from updater.backends.sql import SQLLog
+from sqlalchemy_utils import create_database, database_exists, drop_database
 from pymongo import MongoClient
 
 
@@ -59,3 +62,16 @@ def redis_backend():
         r.flushdb()
         yield r
         r.flushdb()
+
+
+@pytest.fixture(scope="function")
+def sql_backend():
+    postgres_uri = "postgresql+psycopg2://user:pass@postgres:5432/db"
+    if database_exists(postgres_uri):
+        drop_database(postgres_uri)
+    create_database(postgres_uri)
+    engine = create_engine(url=postgres_uri)
+    SQLLog.metadata.create_all(engine)
+    with Session(engine) as session:
+        yield session
+    drop_database(postgres_uri)
