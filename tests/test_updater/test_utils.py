@@ -17,7 +17,7 @@ def test_progress_updater_passing_params_redis(redis):
     assert redis.get()
 
 
-def test_progress_updater_passing_params_mongo():
+def test_progress_updater_passing_params_mongo(mongo):
 
     mongo_settings = MongoSettings(
         mongo_connection="mongodb://user:pass@mongo:27017",
@@ -34,7 +34,7 @@ def test_progress_updater_passing_params_mongo():
     )
 
 
-def test_progress_updater_passing_params_sql():
+def test_progress_updater_passing_params_sql(sql):
 
     sql_settings = SQLSettings(
         sql_dsn="postgresql+psycopg2://user:pass@postgres:5432/db",
