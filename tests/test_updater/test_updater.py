@@ -30,6 +30,24 @@ def test_progress_updater_skip_backend(redis_backend, capsys):
     assert not redis_backend.keys()
 
 
+def test_progress_updater_skip_backend_no_verbose(redis_backend, capsys):
+
+    assert not redis_backend.keys()
+    assert capsys.readouterr().out == ""
+
+    updater = ProgressUpdater(
+        task_name="My Task", write_on_backend=False, verbose=False
+    )
+
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
+
+    updater.raise_latest_exception()
+
+    assert capsys.readouterr().out == ""
+    assert not redis_backend.keys()
+
+
 def test_progress_updater_passing_params_redis(redis_backend, capsys):
 
     assert not redis_backend.keys()
