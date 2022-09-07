@@ -5,6 +5,31 @@ from updater.backends.mongo import MongoSettings
 from updater.backends.redis import RedisSettings
 
 
+def test_progress_updater_skip_backend(redis_backend, capsys):
+
+    assert not redis_backend.keys()
+    assert capsys.readouterr().out == ""
+
+    updater = ProgressUpdater(task_name="My Task", write_on_backend=False)
+
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
+
+    with updater(block_name="Second Block") as updater:
+        updater.notify("Doing second block...")
+
+    updater.raise_latest_exception()
+
+    assert (
+        capsys.readouterr().out
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tSuccessfully completed\t- Entering ..."
+        "\tDoing second block...\t\t"
+        "Time spent: 0h0m\t\tSuccessfully completed"
+    )
+    assert not redis_backend.keys()
+
+
 def test_progress_updater_passing_params_redis(redis_backend, capsys):
 
     assert not redis_backend.keys()
