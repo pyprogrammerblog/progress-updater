@@ -57,13 +57,18 @@ This is the priority.
 1. Passing settings as parameters when creating a `ProgressUpdater` object.
 ```python
 from updater import ProgressUpdater
-from updater.backends.redis import RedisSettings
+from updater.backends.mongo import MongoSettings
 
-redis_settings = RedisSettings(redis_password="pass")
+settings = MongoSettings(
+    mongo_connection="mongodb://user:pass@mongo:27017",
+    mongo_db="db",
+    mongo_collection="logs",
+)
 
-with ProgressUpdater(task_name="My Task", settings=redis_settings) as updater:
+with ProgressUpdater(task_name="My Task", settings=settings) as updater:
     ...
 ```
+
 2. Environment variables. 
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell
