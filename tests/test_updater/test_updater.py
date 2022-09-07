@@ -1,5 +1,5 @@
-from updater.utils import progress_updater
 from sqlmodel import select
+from updater import ProgressUpdater
 from updater.backends.sql import SQLSettings, SQLLog
 from updater.backends.mongo import MongoSettings
 from updater.backends.redis import RedisSettings
@@ -7,84 +7,87 @@ from updater.backends.redis import RedisSettings
 
 def test_progress_updater_passing_params_redis(redis_backend, capsys):
 
+    assert not redis_backend.keys()
+    assert capsys.readouterr().out == ""
+
     redis_settings = RedisSettings(
         redis_password="pass", redis_host="redis", redis_db=1
     )
 
-    @progress_updater(
-        verbose=True,
-        task_name="My task",
-        settings=redis_settings,
-    )
-    def task():
-        return "doing a lot of work..."
+    updater = ProgressUpdater(task_name="My Task", settings=redis_settings)
 
-    assert not redis_backend.keys()
-    assert capsys.readouterr().out == ""
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
 
-    task()  # run the task
+    with updater(block_name="Second Block") as updater:
+        updater.notify("Doing second block...")
+
+    updater.raise_latest_exception()
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tSuccessfully completed\t- Entering ..."
+        "\tDoing second block...\t\t"
+        "Time spent: 0h0m\t\tSuccessfully completed"
     )
     assert redis_backend.keys()
 
 
 def test_progress_updater_passing_params_mongo(mongo_backend, capsys):
 
-    mongo_settings = MongoSettings(
-        mongo_connection="mongodb://user:pass@mongo:27017",
-        mongo_db="db",
-        mongo_collection="logs",
+    updater = ProgressUpdater(
+        task_name="My Task",
+        settings=MongoSettings(
+            mongo_connection="mongodb://user:pass@mongo:27017",
+            mongo_db="db",
+            mongo_collection="logs",
+        ),
     )
 
-    @progress_updater(
-        verbose=True,
-        task_name="My task",
-        settings=mongo_settings,
-    )
-    def task():
-        return "doing a lot of work..."
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
 
-    assert not mongo_backend.count_documents(filter={})
-    assert capsys.readouterr().out == ""
+    with updater(block_name="Second Block") as updater:
+        updater.notify("Doing second block...")
 
-    task()  # run the task
+    updater.raise_latest_exception()
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tSuccessfully completed\t- Entering ..."
+        "\tDoing second block...\t\t"
+        "Time spent: 0h0m\t\tSuccessfully completed"
     )
     assert mongo_backend.count_documents(filter={})
 
 
 def test_progress_updater_passing_params_sql(sql_backend, capsys):
 
+    assert not sql_backend.exec(select(SQLLog)).first()
+
     sql_settings = SQLSettings(
         sql_dsn="postgresql+psycopg2://user:pass@postgres:5432/db",
         sql_table="logs",
     )
 
-    @progress_updater(
-        verbose=True,
-        task_name="My task",
-        settings=sql_settings,
-    )
-    def task():
-        return "doing a lot of work..."
+    updater = ProgressUpdater(task_name="My Task", settings=sql_settings)
 
-    assert not sql_backend.exec(select(SQLLog)).first()
-    assert capsys.readouterr().out == ""
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
 
-    task()  # run the task
+    with updater(block_name="Second Block") as updater:
+        updater.notify("Doing second block...")
+
+    updater.raise_latest_exception()
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tSuccessfully completed\t- Entering ..."
+        "\tDoing second block...\t\t"
+        "Time spent: 0h0m\t\tSuccessfully completed"
     )
     assert sql_backend.exec(select(SQLLog)).first()
 
@@ -93,22 +96,25 @@ def test_progress_updater_passing_params_sql(sql_backend, capsys):
 def test_progress_updater_env_vars_redis(
     redis_backend, env_vars_redis, capsys
 ):
-    @progress_updater(
-        verbose=True,
-        task_name="My task",
-    )
-    def task():
-        return "doing a lot of work..."
 
     assert not redis_backend.keys()
-    assert capsys.readouterr().out == ""
 
-    task()  # run the task
+    updater = ProgressUpdater(task_name="My Task")
+
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
+
+    with updater(block_name="Second Block") as updater:
+        updater.notify("Doing second block...")
+
+    updater.raise_latest_exception()
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tSuccessfully completed\t- Entering ..."
+        "\tDoing second block...\t\t"
+        "Time spent: 0h0m\t\tSuccessfully completed"
     )
     assert redis_backend.keys()
 
@@ -116,42 +122,48 @@ def test_progress_updater_env_vars_redis(
 def test_progress_updater_env_vars_mongo(
     mongo_backend, env_vars_mongo, capsys
 ):
-    @progress_updater(
-        verbose=True,
-        task_name="My task",
-    )
-    def task():
-        return "doing a lot of work..."
 
     assert not mongo_backend.count_documents(filter={})
-    assert capsys.readouterr().out == ""
 
-    task()  # run the task
+    updater = ProgressUpdater(task_name="My Task")
+
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
+
+    with updater(block_name="Second Block") as updater:
+        updater.notify("Doing second block...")
+
+    updater.raise_latest_exception()
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tSuccessfully completed\t- Entering ..."
+        "\tDoing second block...\t\t"
+        "Time spent: 0h0m\t\tSuccessfully completed"
     )
     assert mongo_backend.count_documents(filter={})
 
 
 def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql, capsys):
-    @progress_updater(
-        verbose=True,
-        task_name="My task",
-    )
-    def task():
-        return "doing a lot of work..."
 
     assert not sql_backend.exec(select(SQLLog)).first()
-    assert capsys.readouterr().out == ""
 
-    task()  # run the task
+    updater = ProgressUpdater(task_name="My Task")
+
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
+
+    with updater(block_name="Second Block") as updater:
+        updater.notify("Doing second block...")
+
+    updater.raise_latest_exception()
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tSuccessfully completed\t- Entering ..."
+        "\tDoing second block...\t\t"
+        "Time spent: 0h0m\t\tSuccessfully completed"
     )
     assert sql_backend.exec(select(SQLLog)).first()
