@@ -36,6 +36,7 @@ class ProgressUpdater:
         if write_on_backend:
             settings = settings or Settings()
             self.log = settings.backend()(uuid=self.uuid, task_name=task_name)
+            self.log.save()
 
         self.notify(f"- Task: {self.task_name}")
 

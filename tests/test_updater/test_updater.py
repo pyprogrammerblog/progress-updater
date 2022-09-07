@@ -5,12 +5,15 @@ from updater.backends.mongo import MongoSettings
 from updater.backends.redis import RedisSettings
 
 
-def test_progress_updater_skip_backend(redis_backend, capsys):
+def test_progress_updater_skip_backend(mongo_backend, capsys):
 
-    assert not redis_backend.keys()
+    assert not mongo_backend.count_documents(filter={})
     assert capsys.readouterr().out == ""
 
-    updater = ProgressUpdater(task_name="My Task", write_on_backend=False)
+    updater = ProgressUpdater(
+        task_name="My Task",
+        write_on_backend=False,
+    )
 
     with updater(block_name="First Block") as updater:
         updater.notify("Doing first block...")
@@ -27,12 +30,12 @@ def test_progress_updater_skip_backend(redis_backend, capsys):
         "\tDoing second block...\t\t"
         "Time spent: 0h0m\t\tSuccessfully completed"
     )
-    assert not redis_backend.keys()
+    assert mongo_backend.count_documents(filter={})
 
 
-def test_progress_updater_skip_backend_no_verbose(redis_backend, capsys):
+def test_progress_updater_skip_backend_no_verbose(mongo_backend, capsys):
 
-    assert not redis_backend.keys()
+    assert not mongo_backend.count_documents(filter={})
     assert capsys.readouterr().out == ""
 
     updater = ProgressUpdater(
@@ -45,7 +48,65 @@ def test_progress_updater_skip_backend_no_verbose(redis_backend, capsys):
     updater.raise_latest_exception()
 
     assert capsys.readouterr().out == ""
-    assert not redis_backend.keys()
+    assert not mongo_backend.count_documents(filter={})
+
+
+def test_progress_updater_skip_backend_raise_exception(mongo_backend, capsys):
+
+    assert not mongo_backend.count_documents(filter={})
+    assert capsys.readouterr().out == ""
+
+    updater = ProgressUpdater(task_name="My Task", write_on_backend=False)
+
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
+        1 / 0
+
+    try:
+        updater.raise_latest_exception()
+    except Exception as e:
+        assert isinstance(e, ZeroDivisionError)
+
+    assert (
+        capsys.readouterr().out
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tFailed\t\tError message: "
+        "<class 'ZeroDivisionError'>: division by zero"
+    )
+    assert not mongo_backend.count_documents(filter={})
+
+
+def test_progress_updater_raise_exception(mongo_backend, capsys):
+
+    assert not mongo_backend.count_documents(filter={})
+    assert capsys.readouterr().out == ""
+
+    updater = ProgressUpdater(
+        task_name="My Task",
+        write_on_backend=False,
+        settings=MongoSettings(
+            mongo_connection="mongodb://user:pass@mongo:27017",
+            mongo_db="db",
+            mongo_collection="logs",
+        ),
+    )
+
+    with updater(block_name="First Block") as updater:
+        updater.notify("Doing first block...")
+        1 / 0
+
+    try:
+        updater.raise_latest_exception()
+    except Exception as e:
+        assert isinstance(e, ZeroDivisionError)
+
+    assert (
+        capsys.readouterr().out
+        == "\t- Task: My task\t- Entering ...\tDoing first block..."
+        "\t\tTime spent: 0h0m\t\tFailed\t\tError message: "
+        "<class 'ZeroDivisionError'>: division by zero"
+    )
+    assert mongo_backend.count_documents(filter={})
 
 
 def test_progress_updater_passing_params_redis(redis_backend, capsys):
@@ -185,7 +246,7 @@ def test_progress_updater_env_vars_mongo(
         "\tDoing second block...\t\t"
         "Time spent: 0h0m\t\tSuccessfully completed"
     )
-    assert mongo_backend.count_documents(filter={})
+    assert not mongo_backend.count_documents(filter={})
 
 
 def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql, capsys):
