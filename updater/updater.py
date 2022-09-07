@@ -1,4 +1,5 @@
 import datetime
+import sys
 from uuid import UUID, uuid4
 from updater.backends import Settings
 from updater.backends.mongo import MongoSettings
@@ -34,7 +35,9 @@ class ProgressUpdater:
 
         if write_on_backend:
             settings = settings or Settings()
-            self.log = settings.backend()(uuid=uuid, task_name=task_name)
+            self.log = settings.backend()(uuid=self.uuid, task_name=task_name)
+
+        self.notify(f"- Task: {self.task_name}")
 
     def __enter__(self, block_name: str = None) -> "ProgressUpdater":
         self.block_name = block_name or "..."
@@ -71,4 +74,4 @@ class ProgressUpdater:
             self.log.save()
 
         if self.verbose:
-            print(msg)
+            sys.stdout.write(msg)

@@ -6,10 +6,11 @@ from updater.backends.sql import SQLSettings
 
 
 def progress_updater(
-    settings: MongoSettings | RedisSettings | SQLSettings = None,
     task_name: str = None,
     verbose: bool = True,
     suppress_exception: bool = True,
+    write_on_backend: bool = True,
+    settings: MongoSettings | RedisSettings | SQLSettings = None,
 ):
     """
     Task Updater Decorator
@@ -29,6 +30,7 @@ def progress_updater(
             with ProgressUpdater(
                 task_name=task_name or func.name,
                 suppress_exception=suppress_exception,
+                write_on_backend=write_on_backend,
                 verbose=verbose,
                 settings=settings,
             ) as task_updater:

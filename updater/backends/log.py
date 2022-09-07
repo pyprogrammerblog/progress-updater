@@ -31,7 +31,7 @@ class Log(BaseModel):
     uuid: UUID = Field(default_factory=uuid4, description="UUID")
     task_name: str = Field(description="Task name")
     status: str = Field(default=Status.PENDING, description="Status")
-    log: str = Field(default=None, description="Result")
+    log: str = Field(default="", description="Result")
     description: str = Field(default=None, description="Description")
 
     start_time: datetime = Field(

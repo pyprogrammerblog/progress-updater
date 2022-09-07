@@ -52,7 +52,9 @@ def mongo_backend():
         "mongodb://user:pass@mongo:27017", UuidRepresentation="standard"
     ) as client:
         client.drop_database("db")
-        yield client
+        db = client.get_database("db")
+        collection = db.get_collection("logs")
+        yield collection
         client.drop_database("db")
 
 
