@@ -30,7 +30,7 @@ def test_progress_updater_skip_backend(mongo_backend, capsys):
         "\tDoing second block...\t\t"
         "Time spent: 0h0m\t\tSuccessfully completed"
     )
-    assert mongo_backend.count_documents(filter={})
+    assert not mongo_backend.count_documents(filter={})
 
 
 def test_progress_updater_skip_backend_no_verbose(mongo_backend, capsys):
@@ -83,7 +83,6 @@ def test_progress_updater_raise_exception(mongo_backend, capsys):
 
     updater = ProgressUpdater(
         task_name="My Task",
-        write_on_backend=False,
         settings=MongoSettings(
             mongo_connection="mongodb://user:pass@mongo:27017",
             mongo_db="db",
@@ -246,7 +245,7 @@ def test_progress_updater_env_vars_mongo(
         "\tDoing second block...\t\t"
         "Time spent: 0h0m\t\tSuccessfully completed"
     )
-    assert not mongo_backend.count_documents(filter={})
+    assert mongo_backend.count_documents(filter={})
 
 
 def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql, capsys):
