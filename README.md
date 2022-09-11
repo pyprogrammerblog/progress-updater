@@ -6,7 +6,7 @@ progress-updater
 [![GitHub Actions](https://github.com/pyprogrammerblog/progress-updater/workflows/CI/badge.svg/)](https://github.com/pyprogrammerblog/progress-updater/workflows/CI/badge.svg/)
 [![PyPI version](https://badge.fury.io/py/progress-updater.svg)](https://badge.fury.io/py/progress-updater)
 
-Writing the progress task to a backend!
+Writing the progress of a task to a backend!
 
 Installation
 -------------
