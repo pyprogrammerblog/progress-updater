@@ -69,10 +69,9 @@ def test_progress_updater_skip_backend_raise_exception(mongo_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n\n- Entering First Block\nDoing first block..."
-        "\n\tTime spent: 0h0m\n\tSuccessfully completed\n\n- "
-        "Entering Second Block\nDoing second block...\n\tTime spent: "
-        "0h0m\n\tSuccessfully completed\n"
+        == "- Task: My task\n\n- Entering First Block\nDoing first "
+        "block...\n\tTime spent: 0h0m\n\tFailed\n\tError message: "
+        "<class 'ZeroDivisionError'>: division by zero\n"
     )
     assert not mongo_backend.count_documents(filter={})
 
@@ -102,10 +101,9 @@ def test_progress_updater_raise_exception(mongo_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n\n- Entering First Block\nDoing first block..."
-        "\n\tTime spent: 0h0m\n\tSuccessfully completed\n\n- "
-        "Entering Second Block\nDoing second block...\n\tTime spent: "
-        "0h0m\n\tSuccessfully completed\n"
+        == "- Task: My task\n\n- Entering First Block\nDoing first "
+        "block...\n\tTime spent: 0h0m\n\tFailed\n\tError message: "
+        "<class 'ZeroDivisionError'>: division by zero\n"
     )
     assert mongo_backend.count_documents(filter={})
 
