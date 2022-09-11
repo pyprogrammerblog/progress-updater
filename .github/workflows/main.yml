@@ -14,22 +14,22 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build broker
-        run: docker-compose build updater
+        run: docker-compose build app
 
       - name: Install python packages
-        run: docker-compose run --rm updater poetry install
+        run: docker-compose run --rm app poetry install
 
       - name: Check your installed dependencies for security vulnerabilities
-        run: docker-compose run --rm updater poetry check
+        run: docker-compose run --rm app poetry check
 
       - name: Test
-        run: docker-compose run --rm updater poetry run pytest
+        run: docker-compose run --rm app poetry run pytest
 
       - name: Flake8
-        run: docker-compose run --rm updater poetry run flake8 updater
+        run: docker-compose run --rm app poetry run flake8 updater
 
       - name: MyPy
-        run: docker-compose run --rm updater poetry run mypy arend --no-strict-optional --ignore-missing-imports
+        run: docker-compose run --rm app poetry run mypy arend --no-strict-optional --ignore-missing-imports
 
       - name: Remove Services
         run: docker-compose down
