@@ -1,30 +1,28 @@
 import logging
 from datetime import datetime
-from uuid import uuid4, UUID
-
+from uuid import UUID
+from typing import Dict
+from pydantic import BaseModel
 from pymongo.collection import Collection
 from contextlib import contextmanager
-from pydantic import BaseModel, Field
+from updater.backends.log import Log
 from pymongo.mongo_client import MongoClient
 
-__all__ = ["DBAdapter"]
+__all__ = ["MongoLog", "MongoSettings"]
 
 
 logger = logging.getLogger(__name__)
 
 
-class DBAdapter(BaseModel):
+class MongoLog(Log):
     """
     Mongo DB Adapter
     """
 
-    uuid: UUID = Field(default_factory=uuid4, description="UUID")
-    updated: datetime = Field(default_factory=datetime.utcnow)
-
     class Meta:
-        db_connection: str = settings.mongo_connection
-        db_name: str = settings.mongo_db
-        db_collection: str
+        mongo_connection: str
+        mongo_db: str
+        mongo_collection: str
 
     @classmethod
     @contextmanager
@@ -32,21 +30,15 @@ class DBAdapter(BaseModel):
         """
         Yield a connection
         """
-        db_conn = (
-            cls.Meta.db_connection
-            if hasattr(cls.Meta, "db_connection")
-            else DBAdapter.Meta.db_connection
-        )
-        db_name = (
-            cls.Meta.db_name
-            if hasattr(cls.Meta, "db_name")
-            else DBAdapter.Meta.db_name
-        )
-        db_collection = cls.Meta.db_collection or "default"
+        assert cls.Meta.mongo_connection, "Please set a db connection"
+        assert cls.Meta.mongo_db, "Please set a db name"
+        assert cls.Meta.mongo_collection, "Please set a db collection"
 
-        with MongoClient(db_conn, UuidRepresentation="standard") as client:
-            db = client.get_database(db_name)
-            collection = db.get_collection(db_collection)
+        with MongoClient(
+            cls.Meta.mongo_connection, UuidRepresentation="standard"
+        ) as client:
+            db = client.get_database(cls.Meta.mongo_db)
+            collection = db.get_collection(cls.Meta.mongo_collection)
             yield collection
 
     @classmethod
@@ -78,3 +70,20 @@ class DBAdapter(BaseModel):
         with self.mongo_collection() as collection:
             deleted = collection.delete_one({"uuid": self.uuid})
             return deleted.deleted_count
+
+
+class MongoSettings(BaseModel):
+    """
+    Mongo Settings
+    """
+
+    mongo_connection: str
+    mongo_db: str
+    mongo_collection: str = "logs"
+    mongo_extras: Dict = None
+
+    def backend(self):
+        MongoLog.Meta.mongo_connection = self.mongo_connection
+        MongoLog.Meta.mongo_db = self.mongo_db
+        MongoLog.Meta.mongo_collection = self.mongo_collection
+        return MongoLog
