@@ -22,8 +22,8 @@ def test_progress_updater_passing_params_redis(redis_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: Task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "- Task: Task\n- Entering ...\n\tTime spent: "
+        "0h0m\n\tSuccessfully completed\n"
     )
     assert redis_backend.keys()
 
@@ -51,8 +51,8 @@ def test_progress_updater_passing_params_mongo(mongo_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "- Task: My task\n- Entering ...\n\tTime spent: "
+        "0h0m\n\tSuccessfully completed\n"
     )
     assert mongo_backend.count_documents(filter={})
 
@@ -79,8 +79,8 @@ def test_progress_updater_passing_params_sql(sql_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "- Task: My task\n- Entering ...\n\tTime spent: "
+        "0h0m\n\tSuccessfully completed\n"
     )
     assert sql_backend.exec(select(SQLLog)).first()
 
@@ -103,8 +103,8 @@ def test_progress_updater_env_vars_redis(
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "- Task: My task\n- Entering ...\n\tTime spent: "
+        "0h0m\n\tSuccessfully completed\n"
     )
     assert redis_backend.keys()
 
@@ -126,8 +126,8 @@ def test_progress_updater_env_vars_mongo(
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "- Task: My task\n- Entering ...\n\tTime spent: "
+        "0h0m\n\tSuccessfully completed\n"
     )
     assert mongo_backend.count_documents(filter={})
 
@@ -147,7 +147,7 @@ def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql, capsys):
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
-        "0h0m\t\tSuccessfully completed"
+        == "- Task: My task\n- Entering ...\n\tTime spent: "
+        "0h0m\n\tSuccessfully completed\n"
     )
     assert sql_backend.exec(select(SQLLog)).first()
