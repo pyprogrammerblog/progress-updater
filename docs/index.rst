@@ -72,7 +72,8 @@ In you console, for example::
 There are some possible ways to pass backend settings to the updater.
 This is the priority.
 
-1. Passing settings as parameters when creating a `ProgressUpdater` object::
+1. Passing settings as parameters when creating a `ProgressUpdater` object.
+On your console::
 
    from progress_updater import ProgressUpdater
    from progress_updater.backends.mongo import MongoSettings
