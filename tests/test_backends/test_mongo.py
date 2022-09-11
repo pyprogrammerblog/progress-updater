@@ -1,6 +1,6 @@
 import uuid
-from updater.backends import Settings
-from updater.backends.mongo import MongoSettings, MongoLog
+from progress_updater.backends import Settings
+from progress_updater.backends.mongo import MongoSettings, MongoLog
 
 
 def test_create_settings_passing_params_mongo(mongo_backend):

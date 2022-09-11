@@ -2,7 +2,7 @@ import os
 import pytest
 import redis
 from sqlmodel import Session, create_engine
-from updater.backends.sql import SQLLog
+from progress_updater.backends.sql import SQLLog
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from pymongo import MongoClient
 

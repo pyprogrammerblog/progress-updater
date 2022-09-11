@@ -6,7 +6,7 @@ progress-updater
 [![GitHub Actions](https://github.com/pyprogrammerblog/progress-updater/workflows/CI/badge.svg/)](https://github.com/pyprogrammerblog/progress-updater/workflows/CI/badge.svg/)
 [![PyPI version](https://badge.fury.io/py/progress-updater.svg)](https://badge.fury.io/py/progress-updater)
 
-Writing the progress task to a backend!
+Writing the progress of a task to a backend!
 
 Installation
 -------------
@@ -14,16 +14,16 @@ Installation
 Install it using ``pip``
 
 ```shell
-pip install progress-updater
+pip install progress-progress_updater
 ```
 
 Basic usage
 -------------
 
 ```python
-from updater import ProgressUpdater
+from progress_updater import ProgressUpdater
 
-# create an updater object
+# create an progress_updater object
 updater = ProgressUpdater(task_name="My Task")
 
 with updater(block_name="First part") as updater:
@@ -55,9 +55,10 @@ There are some possible ways to pass settings to the updater.
 This is the priority.
 
 1. Passing settings as parameters when creating a `ProgressUpdater` object.
+
 ```python
-from updater import ProgressUpdater
-from updater.backends.mongo import MongoSettings
+from progress_updater import ProgressUpdater
+from progress_updater.backends.mongo import MongoSettings
 
 settings = MongoSettings(
     mongo_connection="mongodb://user:pass@mongo:27017",

@@ -1,8 +1,8 @@
-from updater.utils import progress_updater
+from progress_updater.utils import progress_updater
 from sqlmodel import select
-from updater.backends.sql import SQLSettings, SQLLog
-from updater.backends.mongo import MongoSettings
-from updater.backends.redis import RedisSettings
+from progress_updater.backends.sql import SQLSettings, SQLLog
+from progress_updater.backends.mongo import MongoSettings
+from progress_updater.backends.redis import RedisSettings
 
 
 def test_progress_updater_passing_params_redis(redis_backend, capsys):

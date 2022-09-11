@@ -1,7 +1,7 @@
 import uuid
-from updater.backends import Settings
+from progress_updater.backends import Settings
 from sqlmodel import select
-from updater.backends.sql import SQLSettings, SQLLog
+from progress_updater.backends.sql import SQLSettings, SQLLog
 
 
 def test_create_settings_passing_params_sql(sql_backend):

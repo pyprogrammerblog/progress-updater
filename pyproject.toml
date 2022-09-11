@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "updater"
-version = "0.1.0"
+name = "progress_updater"
+version = "0.1.2"
 description = "Progress Updater"
 readme = "README.md"
 license = "LICENSE"
@@ -11,8 +11,8 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-homepage = "https://github.com/pyprogrammerblog/task-updater"
-documentation = "https://task-updater.readthedocs.io/en/latest/"
+homepage = "https://github.com/pyprogrammerblog/progress-updater"
+documentation = "https://progress-updater.readthedocs.io/en/latest/"
 
 [virtualenvs]
 create = true  # this creates a .venv folder

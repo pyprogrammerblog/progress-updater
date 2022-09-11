@@ -6,7 +6,7 @@ from datetime import datetime
 from uuid import UUID
 from uuid import uuid4
 from contextlib import contextmanager
-from updater.backends.log import Log
+from progress_updater.backends.log import Log
 
 
 __all__ = ["SQLLog", "SQLSettings"]

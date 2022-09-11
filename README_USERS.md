@@ -4,7 +4,7 @@ progress-updater
 Clone the project and move inside:
 ```shell
 git clone https://github.com/pyprogrammerblog/progress-updater.git
-cd progress-updater
+cd progress-progress
 ```
  
 Install the virtualenv on the root project folder:

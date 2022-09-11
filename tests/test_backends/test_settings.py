@@ -1,7 +1,7 @@
-from updater.backends import Settings
-from updater.backends.sql import SQLSettings, SQLLog
-from updater.backends.mongo import MongoSettings, MongoLog
-from updater.backends.redis import RedisSettings, RedisLog
+from progress_updater.backends import Settings
+from progress_updater.backends.sql import SQLSettings, SQLLog
+from progress_updater.backends.mongo import MongoSettings, MongoLog
+from progress_updater.backends.redis import RedisSettings, RedisLog
 
 
 # passing params
