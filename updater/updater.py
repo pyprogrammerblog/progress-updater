@@ -43,84 +43,80 @@ class ProgressUpdater:
         >>>     updater.notify("doing first block...")
         >>>     # doing more things
 
-    Backends
-    ----------
+    **Backends**
     There are three backends available to save our logs.
 
-    1. MongoSettings. The parameters to define a backend are:
-        1.1 mongo_connection: str. Connection string
-        1.2 mongo_db:m str. DB Name
-        1.3 mongo_collection: str. Collection name.
-        1.3 mongo_extras: str. See extra arguments in Pymongo.
+    1. MongoSettings. Parameters are:
+        - mongo_connection: str. Connection string
+        - mongo_db:m str. DB Name
+        - mongo_collection: str. Collection name.
+        - mongo_extras: dict. See extra arguments in Pymongo.
 
-    2. RedisSettings. The parameters to define a backend are:
-        1.1 sql_dsn: str. SQLAlchemy connection string.
-        1.2 sql_table:m str. SQL Table Name.
-        1.3 sql_extras: str. See extra arguments for SQLAlchemy.
+    2. RedisSettings. Parameters are:
+        - sql_dsn: str. SQLAlchemy connection string.
+        - sql_table:m str. SQL Table Name.
+        - sql_extras: dict. See extra arguments for SQLAlchemy.
 
-    3. SQLSettings. The parameters to define a backend are:
-        1.1 redis_host. str.
-        1.2 redis_port. int.
-        1.3 redis_db. int.
-        1.4 redis_password. str.
-        1.4 redis_extras. Dict.
+    3. SQLSettings. Parameters are:
+        - redis_host. str.
+        - redis_port. int.
+        - redis_db. int.
+        - redis_password. str.
+        - redis_extras. dict.
 
-    Settings
-    ----------
+
+    **Settings.**
     Different ways to pass settings to the Progress Updater with
     priority order.
 
-    1. Passing settings as parameters when creating a `ProgressUpdater`
+    **1. Passing settings** as parameters when creating a `ProgressUpdater`
     object:
 
         >>> from updater import ProgressUpdater
         >>> from updater.backends.mongo import MongoSettings
-
-    Mongo:
+        >>>
         >>> settings = MongoSettings(
         >>>     mongo_connection="mongodb://user:pass@mongo:27017",
         >>>     mongo_db="db",
         >>>     mongo_collection="logs",
         >>> )
-
-    Or SQL:
+        >>>
         >>> sql_settings = SQLSettings(
         >>>     sql_dsn="postgresql+psycopg2://user:pass@postgres:5432/db",
         >>>     sql_table="logs",
         >>> )
-    Or Redis:
+        >>>
         >>> redis_settings = RedisSettings(
         >>>     redis_host="redis", redis_password="pass"
         >>> )
-
-    Then on your updater:
+        >>>
         >>> with ProgressUpdater(
         >>>     task_name="My Task", settings=settings
         >>> ) as updater:
         >>>     ...
 
-    2. Environment variables. Set you setting parameters in your
+    **2. Environment variables**. Set you setting parameters in your
     environment. The `PU__` prefix indicates that belongs to the
     `ProgressUpdater` settings. The `ProgressUpdater` will catch
     these settings if the option `write_on_backend` is set to `True`.
 
-    Examples:
-    ```
-    PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
-    PU__SQL_TABLE=logs
-    ```
-    or
-    ```
-    PU__REDIS_HOST=redis
-    PU__REDIS_DB=1
-    PU__REDIS_PASSWORD=pass
-    ```
-    or
-    ```
-    PU__MONGO_CONNECTION=mongodb://user:pass@mongo:27017
-    PU__MONGO_DB=db
-    PU__MONGO_COLLECTION=logs
-    ```
+    Examples::
+
+        PU__SQL_DSN='postgresql+psycopg2://user:pass@postgres:5432/db'
+        PU__SQL_TABLE='logs'
+
+    or::
+
+        PU__REDIS_HOST='redis'
+        PU__REDIS_DB='1'
+        PU__REDIS_PASSWORD='pass'
+
+    or::
+
+        PU__MONGO_CONNECTION='mongodb://user:pass@mongo:27017'
+        PU__MONGO_DB='db'
+        PU__MONGO_COLLECTION='logs'
+
     """
 
     FAIL = "FAIL"
