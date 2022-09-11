@@ -14,7 +14,7 @@ Installation
 Install it using ``pip``
 
 ```shell
-pip install progress-progress_updater
+pip install progress-progress
 ```
 
 Basic usage
@@ -23,10 +23,9 @@ Basic usage
 ```python
 from progress_updater import ProgressUpdater
 
-# create an progress_updater object
-updater = ProgressUpdater(task_name="My Task")
+updater = ProgressUpdater(task_name="My Task", write_on_backend=False, verbose=True)
 
-with updater(block_name="First part") as updater:
+with updater(block_name="First part"):
     # doing things
     updater.notify("doing first block...")
     # doing more things
@@ -36,16 +35,40 @@ with updater(block_name="Second part"):
     updater.notify("doing second block...")
     # doing more things
 
-updater.raise_latest_exception()
+updater.raise_latest_exception()  # if exists
+```
+
+The output is:
+```shell
+- Task: My task
+
+- Entering First part
+  doing first block...
+	Time spent: 0h0m
+	Successfully completed
+
+- Entering Second part
+  doing second block...
+	Time spent: 0h0m
+	Successfully completed
 ```
 
 Backends
 ----------
-There are three backends available to save our logs.
+If you want to save the output in a Database you will need to define 
+a backend. There are three backends available to save our logs.
 
-1. Mongo. See [documentation]().
-2. Redis. See [documentation]().
-3. SQL. See [documentation]().
+1. Mongo.
+2. Redis.
+3. SQL.
+
+```python
+from progress_updater.backends import MongoLog
+from uuid import UUID
+
+log = MongoLog.get(uuid=UUID("<your task uuid>"))
+assert log.status == "SUCCESS"
+```
 
 
 Settings

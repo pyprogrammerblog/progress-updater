@@ -7,7 +7,7 @@ Backends
 :mod:`Settings`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: updater.backends
+.. automodule:: progress_updater.backends
     :members: Settings
     :exclude-members: Config, backend
 
@@ -15,7 +15,7 @@ Backends
 :mod:`Mongo`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: updater.backends.mongo
+.. automodule:: progress_updater.backends.mongo
     :members: MongoLog, MongoSettings
     :exclude-members: mongo_collection, backend
 
@@ -23,7 +23,7 @@ Backends
 :mod:`Redis`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: updater.backends.redis
+.. automodule:: progress_updater.backends.redis
     :members: RedisLog, RedisSettings
     :exclude-members: redis_connection, backend
 
@@ -31,7 +31,7 @@ Backends
 :mod:`SQL`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: updater.backends.sql
+.. automodule:: progress_updater.backends.sql
     :members: SQLLog, SQLSettings
     :exclude-members: sql_session, backend
 
@@ -39,6 +39,6 @@ Backends
 :mod:`Base Log`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: updater.backends.log
+.. automodule:: progress_updater.backends.log
     :members: Log, Logs
     :exclude-members:

@@ -15,19 +15,19 @@ def test_progress_updater_skip_backend(mongo_backend, capsys):
         write_on_backend=False,
     )
 
-    with updater(block_name="First Block") as updater:
+    with updater(block_name="First Block"):
         updater.notify("Doing first block...")
 
-    with updater(block_name="Second Block") as updater:
+    with updater(block_name="Second Block"):
         updater.notify("Doing second block...")
 
     updater.raise_latest_exception()
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n- Entering ...\nDoing first "
+        == "- Task: My task\n- Entering First Block\nDoing first "
         "block...\n\tTime spent: 0h0m\n\tSuccessfully "
-        "completed\n- Entering ...\nDoing second block"
+        "completed\n- Entering Second Block\nDoing second block"
         "...\n\tTime spent: 0h0m\n\tSuccessfully completed\n"
     )
     assert not mongo_backend.count_documents(filter={})
@@ -68,7 +68,7 @@ def test_progress_updater_skip_backend_raise_exception(mongo_backend, capsys):
         assert isinstance(e, ZeroDivisionError)
 
     assert (
-        capsys.readouterr().out == "- Task: My task\n- Entering ..."
+        capsys.readouterr().out == "- Task: My task\n- Entering First Block"
         "\nDoing first block...\n\tTime spent: "
         "0h0m\n\tFailed\n\tError message: <class "
         "'ZeroDivisionError'>: division by zero\n"
@@ -100,7 +100,7 @@ def test_progress_updater_raise_exception(mongo_backend, capsys):
         assert isinstance(e, ZeroDivisionError)
 
     assert (
-        capsys.readouterr().out == "- Task: My task\n- Entering ..."
+        capsys.readouterr().out == "- Task: My task\n- Entering First Block"
         "\nDoing first block...\n\tTime spent: "
         "0h0m\n\tFailed\n\tError message: <class "
         "'ZeroDivisionError'>: division by zero\n"
@@ -129,9 +129,9 @@ def test_progress_updater_passing_params_redis(redis_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n- Entering ...\nDoing first block..."
+        == "- Task: My task\n- Entering First Block\nDoing first block..."
         "\n\tTime spent: 0h0m\n\tSuccessfully completed\n- "
-        "Entering ...\nDoing second block...\n\tTime spent: "
+        "Entering Second Block\nDoing second block...\n\tTime spent: "
         "0h0m\n\tSuccessfully completed\n"
     )
     assert redis_backend.keys()
@@ -158,9 +158,9 @@ def test_progress_updater_passing_params_mongo(mongo_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n- Entering ...\nDoing first block..."
+        == "- Task: My task\n- Entering First Block\nDoing first block..."
         "\n\tTime spent: 0h0m\n\tSuccessfully completed\n- "
-        "Entering ...\nDoing second block...\n\tTime spent: "
+        "Entering Second Block\nDoing second block...\n\tTime spent: "
         "0h0m\n\tSuccessfully completed\n"
     )
     assert mongo_backend.count_documents(filter={})
@@ -187,9 +187,9 @@ def test_progress_updater_passing_params_sql(sql_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n- Entering ...\nDoing first block..."
+        == "- Task: My task\n- Entering First Block\nDoing first block..."
         "\n\tTime spent: 0h0m\n\tSuccessfully completed\n- "
-        "Entering ...\nDoing second block...\n\tTime spent: "
+        "Entering Second Block\nDoing second block...\n\tTime spent: "
         "0h0m\n\tSuccessfully completed\n"
     )
     assert sql_backend.exec(select(SQLLog)).first()
@@ -214,9 +214,9 @@ def test_progress_updater_env_vars_redis(
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n- Entering ...\nDoing first block..."
+        == "- Task: My task\n- Entering First Block\nDoing first block..."
         "\n\tTime spent: 0h0m\n\tSuccessfully completed\n- "
-        "Entering ...\nDoing second block...\n\tTime spent: "
+        "Entering Second Block\nDoing second block...\n\tTime spent: "
         "0h0m\n\tSuccessfully completed\n"
     )
     assert redis_backend.keys()
@@ -240,9 +240,9 @@ def test_progress_updater_env_vars_mongo(
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n- Entering ...\nDoing first block..."
+        == "- Task: My task\n- Entering First Block\nDoing first block..."
         "\n\tTime spent: 0h0m\n\tSuccessfully completed\n- "
-        "Entering ...\nDoing second block...\n\tTime spent: "
+        "Entering Second Block\nDoing second block...\n\tTime spent: "
         "0h0m\n\tSuccessfully completed\n"
     )
     assert mongo_backend.count_documents(filter={})
@@ -264,9 +264,9 @@ def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql, capsys):
 
     assert (
         capsys.readouterr().out
-        == "- Task: My task\n- Entering ...\nDoing first block..."
+        == "- Task: My task\n- Entering First Block\nDoing first block..."
         "\n\tTime spent: 0h0m\n\tSuccessfully completed\n- "
-        "Entering ...\nDoing second block...\n\tTime spent: "
+        "Entering Second Block\nDoing second block...\n\tTime spent: "
         "0h0m\n\tSuccessfully completed\n"
     )
     assert sql_backend.exec(select(SQLLog)).first()

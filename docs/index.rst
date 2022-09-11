@@ -49,8 +49,8 @@ This is the priority.
 1. Passing settings as parameters when creating a `ProgressUpdater` object.
 Example ::
 
-   from updater import ProgressUpdater
-   from updater.backends.mongo import MongoSettings
+   from progress_updater import ProgressUpdater
+   from progress_updater.backends.mongo import MongoSettings
 
    settings = MongoSettings(
        mongo_connection="mongodb://user:pass@mongo:27017",
