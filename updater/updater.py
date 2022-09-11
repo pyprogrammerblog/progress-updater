@@ -10,7 +10,7 @@ from typing import Tuple, Optional
 
 class ProgressUpdater:
     """
-    Progress Updater. Defines the Progress Updater Class
+    Progress Updater. Defines the Progress Updater Class.
 
     Basic example:
         >>> from updater import ProgressUpdater
@@ -29,7 +29,7 @@ class ProgressUpdater:
         >>>
         >>> updater.raise_latest_exception()
 
-    Advance example
+    Advance example:
         >>> from updater.backends import MongoSettings
         >>> settings = MongoSettings(
         >>>     mongo_connection="mongodb://user:pass@mongo:27017",
@@ -67,32 +67,60 @@ class ProgressUpdater:
 
     Settings
     ----------
+    Different ways to pass settings to the Progress Updater with
+    priority order.
 
-    There are some possible ways to pass settings to the updater.
-    This is the priority.
+    1. Passing settings as parameters when creating a `ProgressUpdater`
+    object:
 
-    1. Passing settings as parameters when creating a `ProgressUpdater` object.
-    ```python
-    from updater import ProgressUpdater
-    from updater.backends.mongo import MongoSettings
+        >>> from updater import ProgressUpdater
+        >>> from updater.backends.mongo import MongoSettings
 
-    settings = MongoSettings(
-        mongo_connection="mongodb://user:pass@mongo:27017",
-        mongo_db="db",
-        mongo_collection="logs",
-    )
+    Mongo:
+        >>> settings = MongoSettings(
+        >>>     mongo_connection="mongodb://user:pass@mongo:27017",
+        >>>     mongo_db="db",
+        >>>     mongo_collection="logs",
+        >>> )
 
-    with ProgressUpdater(task_name="My Task", settings=settings) as updater:
-        ...
+    Or SQL:
+        >>> sql_settings = SQLSettings(
+        >>>     sql_dsn="postgresql+psycopg2://user:pass@postgres:5432/db",
+        >>>     sql_table="logs",
+        >>> )
+    Or Redis:
+        >>> redis_settings = RedisSettings(
+        >>>     redis_host="redis", redis_password="pass"
+        >>> )
+
+    Then on your updater:
+        >>> with ProgressUpdater(
+        >>>     task_name="My Task", settings=settings
+        >>> ) as updater:
+        >>>     ...
+
+    2. Environment variables. Set you setting parameters in your
+    environment. The `PU__` prefix indicates that belongs to the
+    `ProgressUpdater` settings. The `ProgressUpdater` will catch
+    these settings if the option `write_on_backend` is set to `True`.
+
+    Examples:
     ```
-
-    2. Environment variables.
-    The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
-    ```shell
-    export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
-    export PU__SQL_TABLE=logs
+    PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
+    PU__SQL_TABLE=logs
     ```
-
+    or
+    ```
+    PU__REDIS_HOST=redis
+    PU__REDIS_DB=1
+    PU__REDIS_PASSWORD=pass
+    ```
+    or
+    ```
+    PU__MONGO_CONNECTION=mongodb://user:pass@mongo:27017
+    PU__MONGO_DB=db
+    PU__MONGO_COLLECTION=logs
+    ```
     """
 
     FAIL = "FAIL"
