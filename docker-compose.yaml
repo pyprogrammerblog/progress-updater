@@ -24,11 +24,10 @@ services:
     ports:
       - "5432:5432"
 
-  updater:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: updater
     depends_on:
       - redis
       - postgres

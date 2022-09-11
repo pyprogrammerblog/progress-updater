@@ -155,7 +155,7 @@ dev = ["build (==0.8.0)", "flake8 (==4.0.1)", "hashin (==0.17.0)", "pip-tools (=
 
 [[package]]
 name = "certifi"
-version = "2022.6.15"
+version = "2022.6.15.1"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "dev"
 optional = false
@@ -437,7 +437,7 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "jsonschema"
-version = "4.15.0"
+version = "4.16.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "dev"
 optional = false
@@ -585,7 +585,7 @@ python-versions = "*"
 
 [[package]]
 name = "nbclient"
-version = "0.6.7"
+version = "0.6.8"
 description = "A client library for executing notebooks. Formerly nbconvert's ExecutePreprocessor."
 category = "dev"
 optional = false
@@ -1167,12 +1167,12 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
+lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
-lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sqlalchemy"
-version = "1.4.40"
+version = "1.4.41"
 description = "Database Abstraction Library"
 category = "main"
 optional = false
@@ -1393,7 +1393,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f2a9ad69b293586014d4fd7b0b082b2de68303875f71e04f9223af460a6657fc"
+content-hash = "104017ef8d54cbc9aa64dd3c988ce32ad4044d9eeaba9c7e777086269bdaaab1"
 
 [metadata.files]
 alabaster = []

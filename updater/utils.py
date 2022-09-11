@@ -13,15 +13,34 @@ def progress_updater(
     settings: MongoSettings | RedisSettings | SQLSettings = None,
 ):
     """
-    Task Updater Decorator
+    Progress Updater Decorator. Defines the Progress Updater as decorator
 
-    >>> from updater.utils import progress_updater
-    >>>
-    >>> @progress_updater
-    >>> def task():
-    >>>     return "Hello World"
-    >>>
-    >>> task()
+    Basic example:
+        >>> from updater.utils import progress_updater
+        >>>
+        >>> @progress_updater
+        >>> def task():
+        >>>     return "Hello World"
+        >>>
+        >>> task()
+
+    Advance example
+        >>> from updater.utils import progress_updater
+        >>> from updater.backends import MongoSettings
+        >>>
+        >>> @progress_updater(
+        >>>     task_name="My task",
+        >>>     suppress_exception=False,
+        >>>     settings = MongoSettings(
+        >>>         mongo_connection="mongodb://user:pass@mongo:27017",
+        >>>         mongo_db="db",
+        >>>         mongo_collection="logs",
+        >>>     )
+        >>> )
+        >>> def task():
+        >>>     return "Hello World"
+        >>>
+        >>> task()
     """
 
     def decorator(func):

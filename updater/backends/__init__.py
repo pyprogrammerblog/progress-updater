@@ -3,6 +3,8 @@ from updater.backends.redis import RedisSettings
 from updater.backends.mongo import MongoSettings
 from updater.backends.sql import SQLSettings
 
+__all__ = ["MongoSettings", "RedisSettings", "SQLSettings", "Settings"]
+
 
 class Settings(BaseSettings):
     """

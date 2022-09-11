@@ -10,7 +10,89 @@ from typing import Tuple, Optional
 
 class ProgressUpdater:
     """
-    Task Updater
+    Progress Updater. Defines the Progress Updater Class
+
+    Basic example:
+        >>> from updater import ProgressUpdater
+        >>>
+        >>> updater = ProgressUpdater(task_name="My Task")
+        >>>
+        >>> with updater(block_name="First part") as updater:
+        >>>     # doing things
+        >>>     updater.notify("doing first block...")
+        >>>     # doing more things
+        >>>
+        >>> with updater(block_name="Second part"):
+        >>>     # doing things
+        >>>     updater.notify("doing second block...")
+        >>>     # doing more things
+        >>>
+        >>> updater.raise_latest_exception()
+
+    Advance example
+        >>> from updater.backends import MongoSettings
+        >>> settings = MongoSettings(
+        >>>     mongo_connection="mongodb://user:pass@mongo:27017",
+        >>>     mongo_db="db",
+        >>>     mongo_collection="logs",
+        >>> )
+        >>> updater = ProgressUpdater(task_name="My Task", settings=settings)
+        >>>
+        >>> with updater(block_name="First part") as updater:
+        >>>     # doing things
+        >>>     updater.notify("doing first block...")
+        >>>     # doing more things
+
+    Backends
+    ----------
+    There are three backends available to save our logs.
+
+    1. MongoSettings. The parameters to define a backend are:
+        1.1 mongo_connection: str. Connection string
+        1.2 mongo_db:m str. DB Name
+        1.3 mongo_collection: str. Collection name.
+        1.3 mongo_extras: str. See extra arguments in Pymongo.
+
+    2. RedisSettings. The parameters to define a backend are:
+        1.1 sql_dsn: str. SQLAlchemy connection string.
+        1.2 sql_table:m str. SQL Table Name.
+        1.3 sql_extras: str. See extra arguments for SQLAlchemy.
+
+    3. SQLSettings. The parameters to define a backend are:
+        1.1 redis_host. str.
+        1.2 redis_port. int.
+        1.3 redis_db. int.
+        1.4 redis_password. str.
+        1.4 redis_extras. Dict.
+
+    Settings
+    ----------
+
+    There are some possible ways to pass settings to the updater.
+    This is the priority.
+
+    1. Passing settings as parameters when creating a `ProgressUpdater` object.
+    ```python
+    from updater import ProgressUpdater
+    from updater.backends.mongo import MongoSettings
+
+    settings = MongoSettings(
+        mongo_connection="mongodb://user:pass@mongo:27017",
+        mongo_db="db",
+        mongo_collection="logs",
+    )
+
+    with ProgressUpdater(task_name="My Task", settings=settings) as updater:
+        ...
+    ```
+
+    2. Environment variables.
+    The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
+    ```shell
+    export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
+    export PU__SQL_TABLE=logs
+    ```
+
     """
 
     FAIL = "FAIL"
