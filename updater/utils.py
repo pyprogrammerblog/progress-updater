@@ -9,6 +9,7 @@ def progress_updater(
     task_name: str = None,
     verbose: bool = True,
     suppress_exception: bool = True,
+    raise_latest_exception: bool = True,
     write_on_backend: bool = True,
     settings: MongoSettings | RedisSettings | SQLSettings = None,
 ):
@@ -54,7 +55,9 @@ def progress_updater(
                 settings=settings,
             ) as task_updater:
                 func(*args, **kwargs)
-            task_updater.raise_latest_exception()
+
+            if raise_latest_exception:
+                task_updater.raise_latest_exception()
 
         return inner
 
