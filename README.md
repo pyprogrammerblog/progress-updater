@@ -14,7 +14,7 @@ Installation
 Install it using ``pip``
 
 ```shell
-pip install progress-progress
+pip install progress-updater
 ```
 
 Basic usage
@@ -23,7 +23,7 @@ Basic usage
 ```python
 from progress_updater import ProgressUpdater
 
-updater = ProgressUpdater(task_name="My Task", write_on_backend=False, verbose=True)
+updater = ProgressUpdater(task_name="My Task")
 
 with updater(block_name="First part"):
     # doing things
