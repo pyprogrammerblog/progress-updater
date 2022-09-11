@@ -145,9 +145,9 @@ class ProgressUpdater:
         self.notify(f"- Task: {self.task_name}")
 
     def __enter__(self, block_name: str = None) -> "ProgressUpdater":
-        self.block_name = block_name or "..."
+        self.block_name = self.__dict__.get("block_name") or "..."
         self.start_t = datetime.datetime.utcnow()
-        self.notify(f"- Entering {self.block_name}")
+        self.notify(f"\n- Entering {self.block_name}")
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
