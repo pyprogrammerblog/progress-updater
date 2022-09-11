@@ -31,6 +31,11 @@ class RedisLog(Log):
         """
         Yield a redis connection
         """
+        assert cls.Meta.redis_host, "Please set a redis host"
+        assert cls.Meta.redis_port, "Please set a redis port"
+        assert cls.Meta.redis_db, "Please set a redis db"
+        assert cls.Meta.redis_password, "Please set a redis password"
+
         with redis.Redis(
             host=cls.Meta.redis_host,
             port=cls.Meta.redis_port,

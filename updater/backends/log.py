@@ -25,7 +25,7 @@ class Status:
 
 class Log(BaseModel):
     """
-    Defines the log written to DB
+    Defines the Log written to DB
     """
 
     uuid: UUID = Field(default_factory=uuid4, description="UUID")
