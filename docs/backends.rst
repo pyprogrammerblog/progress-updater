@@ -36,7 +36,7 @@ Backends
     :exclude-members: sql_session, backend
 
 
-:mod:`Log`
+:mod:`Base Log`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: updater.backends.log

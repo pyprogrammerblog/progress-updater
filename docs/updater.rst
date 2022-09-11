@@ -4,7 +4,7 @@ Progress Updater
 =====================
 
 
-:mod:`ProgressUpdater`
+:mod:`Progress Updater`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: updater.updater
@@ -12,7 +12,7 @@ Progress Updater
     :exclude-members:
 
 
-:mod:`progress_updater`
+:mod:`Decorator`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: updater.utils
