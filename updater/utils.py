@@ -9,7 +9,7 @@ def progress_updater(
     task_name: str = None,
     verbose: bool = True,
     suppress_exception: bool = True,
-    raise_latest_exception: bool = True,
+    raise_latest_exception: bool = False,
     write_on_backend: bool = True,
     settings: MongoSettings | RedisSettings | SQLSettings = None,
 ):
