@@ -178,10 +178,10 @@ class ProgressUpdater:
             raise exc_type(exc_val).with_traceback(exc_tb)
 
     def notify(self, message: str):
-        msg = "\t" + message
+        msg = f"{message}\n"
 
         if self.write_on_backend:
-            self.log.log += f"{message}\n"
+            self.log.log += msg
             self.log.save()
 
         if self.verbose:

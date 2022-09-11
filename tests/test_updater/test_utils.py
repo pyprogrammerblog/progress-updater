@@ -11,11 +11,7 @@ def test_progress_updater_passing_params_redis(redis_backend, capsys):
         redis_password="pass", redis_host="redis", redis_db=1
     )
 
-    @progress_updater(
-        verbose=True,
-        task_name="My task",
-        settings=redis_settings,
-    )
+    @progress_updater(settings=redis_settings)
     def task():
         return "doing a lot of work..."
 
@@ -26,7 +22,7 @@ def test_progress_updater_passing_params_redis(redis_backend, capsys):
 
     assert (
         capsys.readouterr().out
-        == "\t- Task: My task\t- Entering ...\t\tTime spent: "
+        == "\t- Task: Task\t- Entering ...\t\tTime spent: "
         "0h0m\t\tSuccessfully completed"
     )
     assert redis_backend.keys()

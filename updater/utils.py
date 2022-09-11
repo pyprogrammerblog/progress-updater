@@ -47,7 +47,7 @@ def progress_updater(
         @functools.wraps(func)
         def inner(*args, **kwargs):
             with ProgressUpdater(
-                task_name=task_name or func.name,
+                task_name=task_name or func.__name__,
                 suppress_exception=suppress_exception,
                 write_on_backend=write_on_backend,
                 verbose=verbose,
