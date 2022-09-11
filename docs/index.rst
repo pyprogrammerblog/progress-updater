@@ -8,17 +8,25 @@ Welcome to progress-updater' documentation!
 =============================================
 
 
+Writing the progress of a task to a backend!
+
+Installation
+-------------
+
+Install it using `pip`::
+
+   pip install progress-updater
+
 Basic usage
 -------------
 
-Make sure you had install the package by doing ``pip install progress-updater`` and then::
+Make sure you have the `progress-updater` installed::
 
-   from updater import ProgressUpdater
+   from progress_updater import ProgressUpdater
 
-   # create an updater object
-   updater = ProgressUpdater(task_name="My Task")
+   updater = ProgressUpdater(task_name="My Task", write_on_backend=False, verbose=True)
 
-   with updater(block_name="First part") as updater:
+   with updater(block_name="First part"):
        # doing things
        updater.notify("doing first block...")
        # doing more things
@@ -28,16 +36,38 @@ Make sure you had install the package by doing ``pip install progress-updater`` 
        updater.notify("doing second block...")
        # doing more things
 
-   updater.raise_latest_exception()
+   updater.raise_latest_exception()  # if exists
 
+The output is::
+
+   - Task: My task
+
+   - Entering First part
+     doing first block...
+       Time spent: 0h0m
+       Successfully completed
+
+   - Entering Second part
+     doing second block...
+       Time spent: 0h0m
+       Successfully completed
 
 Backends
 ----------
-There are three backends available to save our logs.
+If you want to save the output in a Database you will need to define
+a backend. There are three backends available to save our logs.
 
 1. Mongo.
 2. Redis.
 3. SQL.
+
+In you console::
+
+   from progress_updater.backends import MongoLog
+   from uuid import UUID
+
+   log = MongoLog.get(uuid=UUID("<your task uuid>"))
+   assert log.status == "SUCCESS"
 
 
 Settings
@@ -46,8 +76,7 @@ Settings
 There are some possible ways to pass settings to the updater.
 This is the priority.
 
-1. Passing settings as parameters when creating a `ProgressUpdater` object.
-Example ::
+1. Passing settings as parameters when creating a `ProgressUpdater` object::
 
    from progress_updater import ProgressUpdater
    from progress_updater.backends.mongo import MongoSettings
@@ -57,14 +86,15 @@ Example ::
        mongo_db="db",
        mongo_collection="logs",
    )
+
    with ProgressUpdater(task_name="My Task", settings=settings) as updater:
        pass
 
-2. Environment variables. The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
-Example::
+2. Environment variables::
+The `PU__` prefix indicates that it belongs to `ProgressUpdater`::
 
-   export PU__SQL_DSN='postgresql+psycopg2://user:pass@postgres:5432/db'
-   export PU__SQL_TABLE='logs'
+   export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
+   export PU__SQL_TABLE=logs
 
 
 .. toctree::

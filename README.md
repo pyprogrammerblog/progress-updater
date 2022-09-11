@@ -90,10 +90,11 @@ settings = MongoSettings(
 )
 
 with ProgressUpdater(task_name="My Task", settings=settings) as updater:
-    ...
+    pass
 ```
 
-2. Environment variables. 
+2. Environment variables.
+
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell
 export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
