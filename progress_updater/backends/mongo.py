@@ -5,7 +5,7 @@ from typing import Dict
 from pydantic import BaseModel
 from pymongo.collection import Collection
 from contextlib import contextmanager
-from updater.backends.log import Log
+from progress_updater.backends.log import Log
 from pymongo.mongo_client import MongoClient
 
 __all__ = ["MongoLog", "MongoSettings"]

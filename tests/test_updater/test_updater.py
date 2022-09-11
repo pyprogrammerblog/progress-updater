@@ -1,8 +1,8 @@
 from sqlmodel import select
-from updater import ProgressUpdater
-from updater.backends.sql import SQLSettings, SQLLog
-from updater.backends.mongo import MongoSettings
-from updater.backends.redis import RedisSettings
+from progress_updater import ProgressUpdater
+from progress_updater.backends.sql import SQLSettings, SQLLog
+from progress_updater.backends.mongo import MongoSettings
+from progress_updater.backends.redis import RedisSettings
 
 
 def test_progress_updater_skip_backend(mongo_backend, capsys):

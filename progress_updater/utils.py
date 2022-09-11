@@ -1,8 +1,8 @@
 import functools
-from updater.updater import ProgressUpdater
-from updater.backends.mongo import MongoSettings
-from updater.backends.redis import RedisSettings
-from updater.backends.sql import SQLSettings
+from progress_updater.updater import ProgressUpdater
+from progress_updater.backends.mongo import MongoSettings
+from progress_updater.backends.redis import RedisSettings
+from progress_updater.backends.sql import SQLSettings
 
 
 def progress_updater(
@@ -17,7 +17,7 @@ def progress_updater(
     Progress Updater Decorator. Defines the Progress Updater as decorator
 
     Basic example:
-        >>> from updater.utils import progress_updater
+        >>> from progress_updater.utils import progress_updater
         >>>
         >>> @progress_updater
         >>> def task():
@@ -26,8 +26,8 @@ def progress_updater(
         >>> task()
 
     Advance example
-        >>> from updater.utils import progress_updater
-        >>> from updater.backends import MongoSettings
+        >>> from progress_updater.utils import progress_updater
+        >>> from progress_updater.backends import MongoSettings
         >>>
         >>> @progress_updater(
         >>>     task_name="My task",

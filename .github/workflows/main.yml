@@ -26,10 +26,10 @@ jobs:
         run: docker-compose run --rm app poetry run pytest
 
       - name: Flake8
-        run: docker-compose run --rm app poetry run flake8 updater
+        run: docker-compose run --rm app poetry run flake8 progress_updater
 
 #      - name: MyPy
-#        run: docker-compose run --rm app poetry run mypy updater --no-strict-optional --ignore-missing-imports
+#        run: docker-compose run --rm app poetry run mypy progress_updater --no-strict-optional --ignore-missing-imports
 
       - name: Remove Services
         run: docker-compose down

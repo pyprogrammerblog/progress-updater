@@ -1,6 +1,6 @@
 import uuid
-from updater.backends import Settings
-from updater.backends.redis import RedisLog, RedisSettings
+from progress_updater.backends import Settings
+from progress_updater.backends.redis import RedisLog, RedisSettings
 
 
 def test_create_settings_passing_params_redis(redis_backend):

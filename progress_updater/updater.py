@@ -1,10 +1,10 @@
 import datetime
 import sys
 from uuid import UUID, uuid4
-from updater.backends import Settings
-from updater.backends.mongo import MongoSettings
-from updater.backends.redis import RedisSettings
-from updater.backends.sql import SQLSettings
+from progress_updater.backends import Settings
+from progress_updater.backends.mongo import MongoSettings
+from progress_updater.backends.redis import RedisSettings
+from progress_updater.backends.sql import SQLSettings
 from typing import Tuple, Optional
 
 
@@ -13,7 +13,7 @@ class ProgressUpdater:
     Progress Updater. Defines the Progress Updater Class.
 
     Basic example:
-        >>> from updater import ProgressUpdater
+        >>> from progress_updater import ProgressUpdater
         >>>
         >>> updater = ProgressUpdater(task_name="My Task")
         >>>
@@ -30,7 +30,7 @@ class ProgressUpdater:
         >>> updater.raise_latest_exception()
 
     Advance example:
-        >>> from updater.backends import MongoSettings
+        >>> from progress_updater.backends import MongoSettings
         >>> settings = MongoSettings(
         >>>     mongo_connection="mongodb://user:pass@mongo:27017",
         >>>     mongo_db="db",
@@ -72,8 +72,8 @@ class ProgressUpdater:
     **1. Passing settings** as parameters when creating a `ProgressUpdater`
     object:
 
-        >>> from updater import ProgressUpdater
-        >>> from updater.backends.mongo import MongoSettings
+        >>> from progress_updater import ProgressUpdater
+        >>> from progress_updater.backends.mongo import MongoSettings
         >>>
         >>> settings = MongoSettings(
         >>>     mongo_connection="mongodb://user:pass@mongo:27017",
