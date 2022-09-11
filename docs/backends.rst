@@ -57,7 +57,7 @@ Backends
 
 .. automodule:: updater.backends.sql
     :members: SQLSettings
-    :exclude-members:
+    :exclude-members: backend
 
 
 :mod:`Log`
