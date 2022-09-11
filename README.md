@@ -70,11 +70,7 @@ log = MongoLog.get(uuid=UUID("<your task uuid>"))
 assert log.status == "SUCCESS"
 ```
 
-
-Settings
-----------
-
-There are some possible ways to pass settings to the updater. 
+There are some possible ways to pass backend settings to the updater. 
 This is the priority.
 
 1. Passing settings as parameters when creating a `ProgressUpdater` object.
@@ -101,6 +97,14 @@ export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
 export PU__SQL_TABLE=logs
 ```
 
+And then when creating a `ProgressUpdater` object, the backend will be 
+automatically configured.
+```python
+from progress_updater import ProgressUpdater
+
+with ProgressUpdater(task_name="My Task") as updater:
+    pass
+```
 
 Documentation
 --------------
