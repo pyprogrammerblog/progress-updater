@@ -7,10 +7,9 @@ from typing import List
 import logging
 
 
+__all__ = ["Log", "Logs"]
+
 logger = logging.getLogger(__name__)
-
-
-DEFAULT_TTR = 30 * 60  # 30 min
 
 
 class Status:

@@ -76,6 +76,10 @@ class SQLLog(Log, SQLModel, table=True):  # type: ignore
 
 
 class SQLSettings(BaseModel):
+    """
+    SQL Settings
+    """
+
     sql_dsn: str
     sql_table: str = "Logs"
     sql_extras: Dict = None

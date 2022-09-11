@@ -12,65 +12,33 @@ Backends
     :exclude-members: Config, backend
 
 
-:mod:`MongoLog`
+:mod:`Mongo`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: updater.backends.mongo
-    :members: MongoLog
-    :exclude-members: mongo_collection
+    :members: MongoLog, MongoSettings
+    :exclude-members: mongo_collection, backend
 
 
-:mod:`MongoSettings`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: updater.backends.mongo
-    :members: MongoSettings
-    :exclude-members: backend
-
-
-:mod:`RedisLog`
+:mod:`Redis`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: updater.backends.redis
-    :members: RedisLog
-    :exclude-members: redis_connection
+    :members: RedisLog, RedisSettings
+    :exclude-members: redis_connection, backend
 
 
-:mod:`RedisSettings`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: updater.backends.redis
-    :members: RedisSettings
-    :exclude-members:
-
-
-:mod:`SQLLog`
+:mod:`SQL`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: updater.backends.sql
-    :members: SQLLog
-    :exclude-members: sql_session
-
-
-:mod:`SQLSettings`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: updater.backends.sql
-    :members: SQLSettings
-    :exclude-members: backend
+    :members: SQLLog, SQLSettings
+    :exclude-members: sql_session, backend
 
 
 :mod:`Log`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: updater.backends.log
-    :members: Log
-    :exclude-members:
-
-
-:mod:`Logs`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: updater.backends.log
-    :members: Logs
+    :members: Log, Logs
     :exclude-members:

@@ -93,7 +93,7 @@ class ProgressUpdater:
         >>> with ProgressUpdater(
         >>>     task_name="My Task", settings=settings
         >>> ) as updater:
-        >>>     ...
+        >>>     pass
 
     **2. Environment variables**. Set you setting parameters in your
     environment. The `PU__` prefix indicates that belongs to the
@@ -104,13 +104,11 @@ class ProgressUpdater:
 
         PU__SQL_DSN='postgresql+psycopg2://user:pass@postgres:5432/db'
         PU__SQL_TABLE='logs'
-
     or::
 
         PU__REDIS_HOST='redis'
         PU__REDIS_DB='1'
         PU__REDIS_PASSWORD='pass'
-
     or::
 
         PU__MONGO_CONNECTION='mongodb://user:pass@mongo:27017'

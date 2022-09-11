@@ -73,6 +73,10 @@ class MongoLog(Log):
 
 
 class MongoSettings(BaseModel):
+    """
+    Mongo Settings
+    """
+
     mongo_connection: str
     mongo_db: str
     mongo_collection: str = "logs"

@@ -72,6 +72,9 @@ class RedisLog(Log):
 
 
 class RedisSettings(BaseModel):
+    """
+    Redis Settings
+    """
 
     redis_host: str
     redis_port: int = 6379
