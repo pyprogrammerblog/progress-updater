@@ -146,14 +146,6 @@ class RedisSettings(BaseModel):
             >>> RedisLog = RedisSettings.backend()  # type: Type[RedisLog]
             >>> log = RedisLog(task_name="My task", description="A cool task")
             >>> log.save()
-            >>>
-            >>> assert log.dict() == {"task_name": "My task", ...}
-            >>> assert log.json() == '{"task_name": "My task", ...}'
-            >>>
-            >>> log = RedisLog.get(uuid=UUID("<your-uuid>"))
-            >>> assert log.description == "A cool task"
-            >>>
-            >>> assert log.delete() == 1
         """
         RedisLog.Meta.redis_host = self.redis_host
         RedisLog.Meta.redis_port = self.redis_port
