@@ -23,7 +23,7 @@ Make sure you have the `progress-updater` installed::
 
    from progress_updater import ProgressUpdater
 
-   updater = ProgressUpdater(task_name="My Task", write_on_backend=False, verbose=True)
+   updater = ProgressUpdater(task_name="My Task")
 
    with updater(block_name="First part"):
        # doing things
@@ -60,19 +60,10 @@ a backend. There are three backends available to save our logs.
 2. Redis.
 3. SQL.
 
-In you console, for example::
-
-   from progress_updater.backends import MongoLog
-   from uuid import UUID
-
-   log = MongoLog.get(uuid=UUID("<your task uuid>"))
-   assert log.status == "SUCCESS"
-
-
 There are some possible ways to pass backend settings to the updater.
 This is the priority.
 
-1. Passing settings as parameters when creating a `ProgressUpdater` object.
+1. **Passing settings as parameters** when creating a `ProgressUpdater` object.
 On your console::
 
    from progress_updater import ProgressUpdater
@@ -87,7 +78,7 @@ On your console::
    with ProgressUpdater(task_name="My Task", settings=settings) as updater:
        pass
 
-2. Environment variables::
+2. **Environment variables**::
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`::
 
    export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db

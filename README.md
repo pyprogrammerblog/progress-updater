@@ -62,18 +62,10 @@ a backend. There are three backends available to save our logs.
 2. Redis.
 3. SQL.
 
-```python
-from progress_updater.backends import MongoLog
-from uuid import UUID
-
-log = MongoLog.get(uuid=UUID("<your task uuid>"))
-assert log.status == "SUCCESS"
-```
-
 There are some possible ways to pass backend settings to the updater. 
 This is the priority.
 
-1. Passing settings as parameters when creating a `ProgressUpdater` object.
+1. **Passing settings as parameters** when creating a `ProgressUpdater` object.
 
 ```python
 from progress_updater import ProgressUpdater
@@ -89,7 +81,7 @@ with ProgressUpdater(task_name="My Task", settings=settings) as updater:
     pass
 ```
 
-2. Environment variables.
+2. **Environment variables**.
 
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell

@@ -5,7 +5,7 @@ from progress_updater.backends import Settings
 from progress_updater.backends.mongo import MongoSettings
 from progress_updater.backends.redis import RedisSettings
 from progress_updater.backends.sql import SQLSettings
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Union
 
 
 class ProgressUpdater:
@@ -64,7 +64,6 @@ class ProgressUpdater:
         - redis_password. str.
         - redis_extras. dict.
 
-
     **Settings.**
     Different ways to pass settings to the Progress Updater with
     priority order.
@@ -114,7 +113,6 @@ class ProgressUpdater:
         PU__MONGO_CONNECTION='mongodb://user:pass@mongo:27017'
         PU__MONGO_DB='db'
         PU__MONGO_COLLECTION='logs'
-
     """
 
     FAIL = "FAIL"
@@ -128,7 +126,7 @@ class ProgressUpdater:
         suppress_exception: bool = True,
         verbose: bool = True,
         write_on_backend: bool = True,
-        settings: MongoSettings | RedisSettings | SQLSettings = None,
+        settings: Union[MongoSettings, RedisSettings, SQLSettings] = None,
     ):
         self.uuid: UUID = uuid or uuid4()
         self.task_name: str = task_name.capitalize()

@@ -7,7 +7,7 @@ from typing import List
 import logging
 
 
-__all__ = ["Log", "Logs"]
+__all__ = ["BaseLog", "BaseLogs"]
 
 logger = logging.getLogger(__name__)
 
@@ -22,13 +22,15 @@ class Status:
     SUCCESS: str = "SUCCESS"
 
 
-class Log(BaseModel):
+class BaseLog(BaseModel):
     """
-    Defines the Log written to DB
+    Defines the Log written to DB.
+
+    Defines the base used for different Backends.
     """
 
     uuid: UUID = Field(default_factory=uuid4, description="UUID")
-    task_name: str = Field(description="Task name")
+    task_name: str = Field(..., description="Task name")
     status: str = Field(default=Status.PENDING, description="Status")
     log: str = Field(default="", description="Result")
     description: str = Field(default=None, description="Description")
@@ -42,6 +44,10 @@ class Log(BaseModel):
     updated: datetime = Field(default=None)
 
 
-class Logs(BaseModel):
-    logs: List[Log] = Field(default_factory=list, description="Logs")
+class BaseLogs(BaseModel):
+    """
+    Defines the BaseLogs collection
+    """
+
+    logs: List[BaseLog] = Field(default_factory=list, description="Logs")
     count: int = Field(default=0, description="Count")
