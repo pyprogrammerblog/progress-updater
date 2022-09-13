@@ -81,8 +81,8 @@ On your console::
 2. **Environment variables**::
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`::
 
-   export PU__SQL_DSN=postgresql+psycopg2://user:pass@postgres:5432/db
-   export PU__SQL_TABLE=logs
+   export PU__SQL_DSN='postgresql+psycopg2://user:pass@postgres:5432/db'
+   export PU__SQL_TABLE='logs'
 
 And then when creating a `ProgressUpdater` object, the backend will be
 automatically configured::
@@ -99,7 +99,9 @@ automatically configured::
 
    installation
    updater
-   backends
+   sql
+   mongo
+   redis
    license
    help
 

@@ -26,7 +26,8 @@ def progress_updater(
         >>>
         >>> task()
 
-    Advance example:
+    Example passing settings:
+
         >>> from progress_updater.utils import progress_updater
         >>> from progress_updater.backends import MongoSettings
         >>>

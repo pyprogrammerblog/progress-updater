@@ -26,7 +26,6 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
 
     class Meta:
         sql_dsn: str
-        sql_table: str
 
     @classmethod
     @contextmanager
@@ -129,8 +128,8 @@ class SQLSettings(BaseModel):
 
     def backend(self):
         SQLLog.Meta.sql_dsn = self.sql_dsn
-        SQLLog.Meta.sql_table = self.sql_table
         SQLLog.Meta.sql_extras = self.sql_extras
+        SQLLog.__tablename__ = self.sql_table
         return SQLLog
 
 

@@ -12,7 +12,7 @@ class ProgressUpdater:
     """
     Progress Updater. Defines the Progress Updater Class.
 
-    Basic example:
+    Example:
         >>> from progress_updater import ProgressUpdater
         >>>
         >>> updater = ProgressUpdater(task_name="My Task")
@@ -29,35 +29,22 @@ class ProgressUpdater:
         >>>
         >>> updater.raise_latest_exception()
 
-    Advance example:
-        >>> from progress_updater.backends import MongoSettings
-        >>> settings = MongoSettings(
-        >>>     mongo_connection="mongodb://user:pass@mongo:27017",
-        >>>     mongo_db="db",
-        >>>     mongo_collection="logs",
-        >>> )
-        >>> updater = ProgressUpdater(task_name="My Task", settings=settings)
-        >>>
-        >>> with updater(block_name="First part") as updater:
-        >>>     # doing things
-        >>>     updater.notify("doing first block...")
-        >>>     # doing more things
 
     **Backends**
     There are three backends available to save our logs.
 
-    1. MongoSettings. Parameters are:
+    1. **Mongo**. `MongoSettings`. Parameters are:
         - mongo_connection: str. Connection string
         - mongo_db:m str. DB Name
         - mongo_collection: str. Collection name.
         - mongo_extras: dict. See extra arguments in Pymongo.
 
-    2. RedisSettings. Parameters are:
+    2. **Redis**. `RedisSettings`. Parameters are:
         - sql_dsn: str. SQLAlchemy connection string.
         - sql_table:m str. SQL Table Name.
         - sql_extras: dict. See extra arguments for SQLAlchemy.
 
-    3. SQLSettings. Parameters are:
+    3. **SQL**. `SQLSettings`. Parameters are:
         - redis_host. str.
         - redis_port. int.
         - redis_db. int.
@@ -65,7 +52,7 @@ class ProgressUpdater:
         - redis_extras. dict.
 
     **Settings.**
-    Different ways to pass settings to the Progress Updater with
+    Different ways to pass settings to the `ProgressUpdater` with
     priority order.
 
     **1. Passing settings** as parameters when creating a `ProgressUpdater`
@@ -99,20 +86,31 @@ class ProgressUpdater:
     `ProgressUpdater` settings. The `ProgressUpdater` will catch
     these settings if the option `write_on_backend` is set to `True`.
 
-    Examples::
+    Examples:
+
+    SQL::
 
         PU__SQL_DSN='postgresql+psycopg2://user:pass@postgres:5432/db'
         PU__SQL_TABLE='logs'
-    or::
+
+    Redis::
 
         PU__REDIS_HOST='redis'
         PU__REDIS_DB='1'
         PU__REDIS_PASSWORD='pass'
-    or::
+
+    Mongo::
 
         PU__MONGO_CONNECTION='mongodb://user:pass@mongo:27017'
         PU__MONGO_DB='db'
         PU__MONGO_COLLECTION='logs'
+
+    And then when creating a `ProgressUpdater` object, the backend will be
+    automatically configured::
+
+        >>> from progress_updater import ProgressUpdater
+        >>> with ProgressUpdater(task_name="My Task") as updater:
+        >>>     pass
     """
 
     FAIL = "FAIL"
@@ -176,7 +174,7 @@ class ProgressUpdater:
 
     def notify(self, message: str):
         """
-        Stores a message in the Log backend. If verbose is set
+        Stores a message in the backend. If verbose is set
         to `True`, then the message will be printed.
         """
         msg = f"{message}\n"
