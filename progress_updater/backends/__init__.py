@@ -20,7 +20,7 @@ class Settings(BaseSettings):
 
     Different ways to pass settings to the `Settings` with priority order.
 
-    **1. Passing settings** as parameters when creating a `ProgressUpdater`
+    **1. Passing settings** as parameters when creating a `Settings`
     object:
 
         >>> from progress_updater import ProgressUpdater
