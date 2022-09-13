@@ -3,6 +3,7 @@ from progress_updater import ProgressUpdater
 from progress_updater.backends.sql import SQLSettings, SQLLog
 from progress_updater.backends.mongo import MongoSettings
 from progress_updater.backends.redis import RedisSettings
+from progress_updater.backends import Settings
 
 
 def test_progress_updater_skip_backend(mongo_backend, capsys):
@@ -220,6 +221,7 @@ def test_progress_updater_env_vars_redis(
         "0h0m\n\tSuccessfully completed\n"
     )
     assert redis_backend.keys()
+    assert isinstance(updater.settings, Settings)
 
 
 def test_progress_updater_env_vars_mongo(
@@ -246,6 +248,7 @@ def test_progress_updater_env_vars_mongo(
         "0h0m\n\tSuccessfully completed\n"
     )
     assert mongo_backend.count_documents(filter={})
+    assert isinstance(updater.settings, Settings)
 
 
 def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql, capsys):
@@ -270,3 +273,4 @@ def test_progress_updater_env_vars_sql(sql_backend, env_vars_sql, capsys):
         "0h0m\n\tSuccessfully completed\n"
     )
     assert sql_backend.exec(select(SQLLog)).first()
+    assert isinstance(updater.settings, Settings)

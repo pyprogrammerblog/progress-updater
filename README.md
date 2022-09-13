@@ -77,8 +77,7 @@ settings = MongoSettings(
     mongo_collection="logs",
 )
 
-with ProgressUpdater(task_name="My Task", settings=settings) as updater:
-    pass
+updater = ProgressUpdater(task_name="My Task", settings=settings)
 ```
 
 2. **Environment variables**.
@@ -94,8 +93,7 @@ automatically configured.
 ```python
 from progress_updater import ProgressUpdater
 
-with ProgressUpdater(task_name="My Task") as updater:
-    pass
+updater = ProgressUpdater(task_name="My Task")
 ```
 
 Documentation

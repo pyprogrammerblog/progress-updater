@@ -59,27 +59,28 @@ class ProgressUpdater:
     object:
 
         >>> from progress_updater import ProgressUpdater
-        >>> from progress_updater.backends.mongo import MongoSettings
+        >>> from progress_updater import ProgressUpdater
+        >>> from progress_updater.backends import MongoSettings
+        >>> from progress_updater.backends import SQLSettings
+        >>> from progress_updater.backends import RedisSettings
         >>>
-        >>> settings = MongoSettings(
+        >>> mongo_settings = MongoSettings(
         >>>     mongo_connection="mongodb://user:pass@mongo:27017",
         >>>     mongo_db="db",
         >>>     mongo_collection="logs",
         >>> )
-        >>>
         >>> sql_settings = SQLSettings(
         >>>     sql_dsn="postgresql+psycopg2://user:pass@postgres:5432/db",
         >>>     sql_table="logs",
         >>> )
-        >>>
         >>> redis_settings = RedisSettings(
         >>>     redis_host="redis", redis_password="pass"
         >>> )
         >>>
-        >>> with ProgressUpdater(
-        >>>     task_name="My Task", settings=settings
-        >>> ) as updater:
-        >>>     pass
+        >>> updater = ProgressUpdater(
+        >>>     task_name="My Task",
+        >>>     settings=mongo_settings
+        >>> )
 
     **2. Environment variables**. Set you setting parameters in your
     environment. The `PU__` prefix indicates that belongs to the
@@ -109,8 +110,7 @@ class ProgressUpdater:
     automatically configured::
 
         >>> from progress_updater import ProgressUpdater
-        >>> with ProgressUpdater(task_name="My Task") as updater:
-        >>>     pass
+        >>> updater = ProgressUpdater(task_name="My Task")
     """
 
     FAIL = "FAIL"
@@ -136,8 +136,10 @@ class ProgressUpdater:
         self.write_on_backend: bool = write_on_backend
 
         if write_on_backend:
-            sett = settings or Settings()
-            self.log = sett.backend()(uuid=self.uuid, task_name=task_name)
+            self.settings = settings or Settings()
+            self.log = self.settings.backend()(
+                uuid=self.uuid, task_name=task_name
+            )
             self.log.save()
 
         self.notify(f"- Task: {self.task_name}")

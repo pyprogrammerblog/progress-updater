@@ -16,6 +16,28 @@ logger = logging.getLogger(__name__)
 class RedisLog(BaseLog):
     """
     RedisLog class. Defines the Log for Redis Backend
+
+    Usage:
+
+        >>> from progress_updater.backends import RedisSettings
+        >>>
+        >>> settings = RedisSettings(
+        >>>     redis_host="redis",
+        >>>     redis_port="6379",
+        >>>     redis_db="logs",
+        >>>     redis_password="pass"
+        >>> )
+        >>> RedisLog = RedisSettings.backend()  # type: Type[RedisLog]
+        >>> log = RedisLog(task_name="My task", description="A cool task")
+        >>> log.save()
+        >>>
+        >>> assert log.dict() == {"task_name": "My task", ...}
+        >>> assert log.json() == '{"task_name": "My task", ...}'
+        >>>
+        >>> log = RedisLog.get(uuid=UUID("<your-uuid>"))
+        >>> assert log.description == "A cool task"
+        >>>
+        >>> assert log.delete() == 1
     """
 
     class Meta:
@@ -51,6 +73,7 @@ class RedisLog(BaseLog):
         Get object from DataBase
 
         Usage:
+
             >>> ...
             >>> log = RedisLog.get(uuid=UUID("<your-uuid>"))
             >>> assert log.uuid == UUID("<your-uuid>")
@@ -66,6 +89,7 @@ class RedisLog(BaseLog):
         Updates/Creates object in DataBase
 
         Usage:
+
             >>> ...
             >>> log = RedisLog(task_name="My Task")
             >>> log.save()
@@ -83,6 +107,7 @@ class RedisLog(BaseLog):
         Deletes object in DataBase
 
         Usage:
+
             >>> ...
             >>> assert log.delete() == 1  # count deleted 1
             >>> assert log.delete() == 0  # count deleted 0
@@ -121,14 +146,6 @@ class RedisSettings(BaseModel):
             >>> RedisLog = RedisSettings.backend()  # type: Type[RedisLog]
             >>> log = RedisLog(task_name="My task", description="A cool task")
             >>> log.save()
-            >>>
-            >>> assert log.dict() == {"task_name": "My task", ...}
-            >>> assert log.json() == '{"task_name": "My task", ...}'
-            >>>
-            >>> log = RedisLog.get(uuid=UUID("<your-uuid>"))
-            >>> assert log.description == "A cool task"
-            >>>
-            >>> assert log.delete() == 1
         """
         RedisLog.Meta.redis_host = self.redis_host
         RedisLog.Meta.redis_port = self.redis_port

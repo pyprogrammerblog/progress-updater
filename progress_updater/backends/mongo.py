@@ -17,6 +17,27 @@ logger = logging.getLogger(__name__)
 class MongoLog(BaseLog):
     """
     MongoLog class. Defines the Log for Mongo Backend
+
+    Usage:
+
+        >>> from progress_updater.backends import MongoSettings
+        >>>
+        >>> settings = MongoSettings(
+        >>>     mongo_connection="mongodb://user:pass@mongo:27017",
+        >>>     mongo_db="db",
+        >>>     mongo_collection="logs"
+        >>> )
+        >>> MongoLog = MongoSettings.backend()  # type: Type[MongoLog]
+        >>> log = MongoLog(task_name="My task", description="A cool task")
+        >>> log.save()
+        >>>
+        >>> assert log.dict() == {"task_name": "My task", ...}
+        >>> assert log.json() == '{"task_name": "My task", ...}'
+        >>>
+        >>> log = MongoLog.get(uuid=UUID("<your-uuid>"))
+        >>> assert log.description == "A cool task"
+        >>>
+        >>> assert log.delete() == 1
     """
 
     class Meta:
@@ -47,6 +68,7 @@ class MongoLog(BaseLog):
         Get object from DataBase
 
         Usage:
+
             >>> ...
             >>> log = MongoLog.get(uuid=UUID("<your-uuid>"))
             >>> assert log.uuid == UUID("<your-uuid>")
@@ -62,6 +84,7 @@ class MongoLog(BaseLog):
         Updates/Creates object in DataBase
 
         Usage:
+
             >>> ...
             >>> log = MongoLog(task_name="My Task")
             >>> log.save()
@@ -83,6 +106,7 @@ class MongoLog(BaseLog):
         Deletes object in DataBase
 
         Usage:
+
             >>> ...
             >>> assert log.delete() == 1  # count deleted 1
             >>> assert log.delete() == 0  # count deleted 0
@@ -108,6 +132,7 @@ class MongoSettings(BaseModel):
         Returns a MongoLog class and set Mongo backend settings
 
         Usage:
+
             >>> from progress_updater.backends import MongoSettings
             >>>
             >>> settings = MongoSettings(
@@ -118,14 +143,6 @@ class MongoSettings(BaseModel):
             >>> MongoLog = MongoSettings.backend()  # type: Type[MongoLog]
             >>> log = MongoLog(task_name="My task", description="A cool task")
             >>> log.save()
-            >>>
-            >>> assert log.dict() == {"task_name": "My task", ...}
-            >>> assert log.json() == '{"task_name": "My task", ...}'
-            >>>
-            >>> log = MongoLog.get(uuid=UUID("<your-uuid>"))
-            >>> assert log.description == "A cool task"
-            >>>
-            >>> assert log.delete() == 1
         """
         MongoLog.Meta.mongo_connection = self.mongo_connection
         MongoLog.Meta.mongo_db = self.mongo_db

@@ -639,7 +639,7 @@ webpdf = ["pyppeteer (>=1,<1.1)"]
 
 [[package]]
 name = "nbformat"
-version = "5.4.0"
+version = "5.5.0"
 description = "The Jupyter Notebook format"
 category = "dev"
 optional = false
@@ -648,11 +648,11 @@ python-versions = ">=3.7"
 [package.dependencies]
 fastjsonschema = "*"
 jsonschema = ">=2.6"
-jupyter-core = "*"
+jupyter_core = "*"
 traitlets = ">=5.1"
 
 [package.extras]
-test = ["check-manifest", "testpath", "pytest", "pre-commit"]
+test = ["check-manifest", "testpath", "pytest", "pre-commit", "pep440"]
 
 [[package]]
 name = "nest-asyncio"
@@ -809,6 +809,14 @@ test = ["ipaddress", "mock", "enum34", "pywin32", "wmi"]
 
 [[package]]
 name = "psycopg2"
+version = "2.9.3"
+description = "psycopg2 - Python-PostgreSQL Database Adapter"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "psycopg2-binary"
 version = "2.9.3"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
 category = "main"
@@ -1408,7 +1416,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "cac2feaf148643d8341e0aca674aa1d1a868fec8c2cf038dd21f41cd8c19b189"
+content-hash = "455083f378d0099cebea97f493fda25be360211c6ef06cf5e0608bd7a124a0e1"
 
 [metadata.files]
 alabaster = []
@@ -1476,6 +1484,7 @@ prometheus-client = []
 prompt-toolkit = []
 psutil = []
 psycopg2 = []
+psycopg2-binary = []
 ptyprocess = []
 pure-eval = []
 py = []
