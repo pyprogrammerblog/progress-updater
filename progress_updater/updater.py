@@ -165,11 +165,18 @@ class ProgressUpdater:
         return self
 
     def raise_latest_exception(self):
+        """
+        Raise latest exception
+        """
         if self.exception:
             exc_type, exc_val, exc_tb = self.exception
             raise exc_type(exc_val).with_traceback(exc_tb)
 
     def notify(self, message: str):
+        """
+        Stores a message in the Log backend. If verbose is set
+        to `True`, then the message will be printed.
+        """
         msg = f"{message}\n"
 
         if self.write_on_backend:
