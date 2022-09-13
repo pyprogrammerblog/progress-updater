@@ -34,7 +34,6 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
         Yield a connection
         """
         assert cls.Meta.sql_dsn, "Please set a sql dsn string"
-        assert cls.Meta.sql_table, "Please set a sql table"
 
         engine = create_engine(cls.Meta.sql_dsn)
         with Session(engine) as session:
