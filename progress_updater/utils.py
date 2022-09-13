@@ -3,6 +3,7 @@ from progress_updater.updater import ProgressUpdater
 from progress_updater.backends.mongo import MongoSettings
 from progress_updater.backends.redis import RedisSettings
 from progress_updater.backends.sql import SQLSettings
+from typing import Union
 
 
 def progress_updater(
@@ -11,7 +12,7 @@ def progress_updater(
     suppress_exception: bool = True,
     raise_latest_exception: bool = False,
     write_on_backend: bool = True,
-    settings: MongoSettings | RedisSettings | SQLSettings = None,
+    settings: Union[MongoSettings, RedisSettings, SQLSettings] = None,
 ):
     """
     Progress Updater Decorator. Defines the Progress Updater as decorator
@@ -25,7 +26,8 @@ def progress_updater(
         >>>
         >>> task()
 
-    Advance example
+    Example passing settings:
+
         >>> from progress_updater.utils import progress_updater
         >>> from progress_updater.backends import MongoSettings
         >>>
