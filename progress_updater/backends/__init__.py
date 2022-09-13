@@ -18,8 +18,8 @@ __all__ = [
 class Settings(BaseSettings):
     """
     **Settings.**
-    Different ways to pass settings to the `Settings` with
-    priority order.
+
+    Different ways to pass settings to the `Settings` with priority order.
 
     **1. Passing settings** as parameters when creating a `ProgressUpdater`
     object:
@@ -33,7 +33,6 @@ class Settings(BaseSettings):
         >>>     mongo_collection="logs",
         >>> )
         >>> settings = Settings(pu=mongo_settings)
-        >>> MongoLog = settings.backend()
 
     **2. Environment variables**. Set you setting parameters in your
     environment. The `PU__` prefix indicates that belongs to the
