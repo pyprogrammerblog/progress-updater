@@ -36,7 +36,7 @@ class MongoLog(BaseLog):
 
         with MongoClient(
             cls.Meta.mongo_connection, UuidRepresentation="standard"
-        ) as client:
+        ) as client:  # type: MongoClient
             db = client.get_database(cls.Meta.mongo_db)
             collection = db.get_collection(cls.Meta.mongo_collection)
             yield collection
@@ -52,7 +52,7 @@ class MongoLog(BaseLog):
             >>> assert log.uuid == UUID("<your-uuid>")
             >>>
         """
-        with cls.mongo_collection() as collection:
+        with cls.mongo_collection() as collection:  # type: Collection
             if task := collection.find_one({"uuid": uuid}):
                 return cls(**task)
 
@@ -69,7 +69,7 @@ class MongoLog(BaseLog):
             >>> ...
         """
         self.updated = datetime.utcnow()
-        with self.mongo_collection() as collection:
+        with self.mongo_collection() as collection:  # type: Collection
             collection.update_one(
                 filter={"uuid": self.uuid},
                 update={"$set": self.dict()},
@@ -87,7 +87,7 @@ class MongoLog(BaseLog):
             >>> assert log.delete() == 0  # count deleted 0
             >>> ...
         """
-        with self.mongo_collection() as collection:
+        with self.mongo_collection() as collection:  # type: Collection
             deleted = collection.delete_one({"uuid": self.uuid})
             return deleted.deleted_count
 

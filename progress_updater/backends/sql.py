@@ -52,7 +52,7 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
             >>> assert log.uuid == UUID("<your-uuid>")
             >>>
         """
-        with cls.sql_session() as session:
+        with cls.sql_session() as session:  # type: Session
             statement = select(cls).where(cls.uuid == str(uuid))
             if task := session.exec(statement).first():
                 return task

@@ -56,7 +56,7 @@ class RedisLog(BaseLog):
             >>> assert log.uuid == UUID("<your-uuid>")
             >>>
         """
-        with cls.redis_connection() as r:
+        with cls.redis_connection() as r:  # type: redis.Redis
             if task := r.get(str(uuid)):
                 return cls.parse_raw(task)
 
@@ -73,7 +73,7 @@ class RedisLog(BaseLog):
             >>> ...
         """
         self.updated = datetime.utcnow()
-        with self.redis_connection() as r:
+        with self.redis_connection() as r:  # type: redis.Redis
             r.set(str(self.uuid), self.json())
         return self
 
@@ -87,7 +87,7 @@ class RedisLog(BaseLog):
             >>> assert log.delete() == 0  # count deleted 0
             >>> ...
         """
-        with self.redis_connection() as r:
+        with self.redis_connection() as r:  # type: redis.Redis
             return r.delete(str(self.uuid))
 
 

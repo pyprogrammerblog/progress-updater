@@ -126,7 +126,9 @@ class ProgressUpdater:
         suppress_exception: bool = True,
         verbose: bool = True,
         write_on_backend: bool = True,
-        settings: Union[MongoSettings, RedisSettings, SQLSettings] = None,
+        settings: Union[
+            MongoSettings, RedisSettings, SQLSettings, None
+        ] = None,
     ):
         self.uuid: UUID = uuid or uuid4()
         self.task_name: str = task_name.capitalize()
