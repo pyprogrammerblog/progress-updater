@@ -45,6 +45,12 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
     def get(cls, uuid: UUID):
         """
         Get object from DataBase
+
+        Usage:
+            >>> ...
+            >>> log = SQLLog.get(uuid=UUID("<your-uuid>"))
+            >>> assert log.uuid == UUID("<your-uuid>")
+            >>>
         """
         with cls.sql_session() as session:
             statement = select(cls).where(cls.uuid == str(uuid))

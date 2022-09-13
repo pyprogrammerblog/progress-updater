@@ -24,9 +24,7 @@ class Status:
 
 class BaseLog(BaseModel):
     """
-    Defines the Log written to DB.
-
-    Defines the base used for different Backends.
+    Defines the BaseLog written to DB used for different Backends.
     """
 
     uuid: UUID = Field(default_factory=uuid4, description="UUID")

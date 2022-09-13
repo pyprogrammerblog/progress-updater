@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "progress_updater"
-version = "0.1.5"
+version = "0.1.6"
 description = "Progress Updater"
 readme = "README.md"
 license = "LICENSE"

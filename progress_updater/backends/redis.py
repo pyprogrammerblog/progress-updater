@@ -48,7 +48,13 @@ class RedisLog(BaseLog):
     @classmethod
     def get(cls, uuid: UUID):
         """
-        Get object from Redis
+        Get object from DataBase
+
+        Usage:
+            >>> ...
+            >>> log = RedisLog.get(uuid=UUID("<your-uuid>"))
+            >>> assert log.uuid == UUID("<your-uuid>")
+            >>>
         """
         with cls.redis_connection() as r:
             if task := r.get(str(uuid)):
