@@ -18,6 +18,25 @@ logger = logging.getLogger(__name__)
 class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
     """
     SQLLog class. Defines the Log for SQL Backend
+
+    Usage:
+
+        >>> from progress_updater.backends import SQLSettings
+        >>>
+        >>> settings = SQLSettings(
+        >>>     sql_dsn="postgresql+psycopg2://user:pass@postgres:5432/db"
+        >>> )
+        >>> SQLLog = SQLSettings.backend()  # type: Type[SQLLog]
+        >>> log = SQLLog(task_name="My task", description="A cool task")
+        >>> log.save()
+        >>>
+        >>> assert log.dict() == {"task_name": "My task", ...}
+        >>> assert log.json() == '{"task_name": "My task", ...}'
+        >>>
+        >>> log = SQLLog.get(uuid=UUID("<your-uuid>"))
+        >>> assert log.description == "A cool task"
+        >>>
+        >>> assert log.delete() == 1
     """
 
     __tablename__ = "progress_updater_logs"
@@ -45,6 +64,7 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
         Get object from DataBase
 
         Usage:
+
             >>> ...
             >>> log = SQLLog.get(uuid=UUID("<your-uuid>"))
             >>> assert log.uuid == UUID("<your-uuid>")
@@ -61,6 +81,7 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
         Updates/Creates object in DataBase
 
         Usage:
+
             >>> ...
             >>> log = SQLLog(task_name="My Task")
             >>> log.save()
@@ -80,6 +101,7 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
         Deletes object in DataBase
 
         Usage:
+
             >>> ...
             >>> assert log.delete() == 1  # count deleted 1
             >>> assert log.delete() == 0  # count deleted 0
@@ -99,6 +121,7 @@ class SQLSettings(BaseModel):
     SQL Settings. Returns a SQLLog class and set SQL backend settings
 
     Usage:
+
         >>> from progress_updater.backends import SQLSettings
         >>>
         >>> settings = SQLSettings(
@@ -107,14 +130,6 @@ class SQLSettings(BaseModel):
         >>> SQLLog = SQLSettings.backend()  # type: Type[SQLLog]
         >>> log = SQLLog(task_name="My task", description="A cool task")
         >>> log.save()
-        >>>
-        >>> assert log.dict() == {"task_name": "My task", ...}
-        >>> assert log.json() == '{"task_name": "My task", ...}'
-        >>>
-        >>> log = SQLLog.get(uuid=UUID("<your-uuid>"))
-        >>> assert log.description == "A cool task"
-        >>>
-        >>> assert log.delete() == 1
     """
 
     sql_dsn: str = Field(..., description="SQLAlchemy dsn connection")

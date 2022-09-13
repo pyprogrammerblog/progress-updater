@@ -51,6 +51,7 @@ The output is::
        Time spent: 0h0m
        Successfully completed
 
+
 Backends
 ----------
 If you want to save the output in a Database you will need to define
@@ -74,9 +75,8 @@ On your console::
        mongo_db="db",
        mongo_collection="logs",
    )
+   updater = ProgressUpdater(task_name="My Task", settings=settings)
 
-   with ProgressUpdater(task_name="My Task", settings=settings) as updater:
-       pass
 
 2. **Environment variables**::
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`::
@@ -84,13 +84,15 @@ The `PU__` prefix indicates that it belongs to `ProgressUpdater`::
    export PU__SQL_DSN='postgresql+psycopg2://user:pass@postgres:5432/db'
    export PU__SQL_TABLE='logs'
 
+
 And then when creating a `ProgressUpdater` object, the backend will be
 automatically configured::
 
    from progress_updater import ProgressUpdater
+   from progress_updater.backends import Settings
 
-   with ProgressUpdater(task_name="My Task") as updater:
-       pass
+   updater = ProgressUpdater(task_name="My Task")
+   isinstance(updater.settings, Settings)
 
 
 .. toctree::
@@ -99,6 +101,7 @@ automatically configured::
 
    installation
    updater
+   settings
    sql
    mongo
    redis
