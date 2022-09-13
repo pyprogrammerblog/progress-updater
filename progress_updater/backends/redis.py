@@ -1,6 +1,6 @@
 import logging
 import redis  # type: ignore
-from typing import Dict, Type, List
+from typing import Dict, Type, List, Union
 from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel, Field
@@ -27,7 +27,7 @@ class RedisLog(BaseLog):
 
     @classmethod
     @contextmanager
-    def redis_connection(cls) -> redis.Redis:
+    def redis_connection(cls):
         """
         Yield a redis connection
         """
@@ -46,7 +46,7 @@ class RedisLog(BaseLog):
             yield r
 
     @classmethod
-    def get(cls, uuid: UUID):
+    def get(cls, uuid: UUID) -> Union["RedisLog", None]:
         """
         Get object from DataBase
 
@@ -59,8 +59,9 @@ class RedisLog(BaseLog):
         with cls.redis_connection() as r:  # type: redis.Redis
             if task := r.get(str(uuid)):
                 return cls.parse_raw(task)
+            return None
 
-    def save(self):
+    def save(self) -> "RedisLog":
         """
         Updates/Creates object in DataBase
 

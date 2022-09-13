@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 from uuid import UUID
-from typing import Dict, Type, List
+from typing import Dict, Type, List, Union
 from pydantic import BaseModel, Field
 from pymongo.collection import Collection
 from contextlib import contextmanager
@@ -26,7 +26,7 @@ class MongoLog(BaseLog):
 
     @classmethod
     @contextmanager
-    def mongo_collection(cls) -> Collection:
+    def mongo_collection(cls):
         """
         Yield a Mongo connection to our logs Collection
         """
@@ -42,7 +42,7 @@ class MongoLog(BaseLog):
             yield collection
 
     @classmethod
-    def get(cls, uuid: UUID):
+    def get(cls, uuid: UUID) -> Union["MongoLog", None]:
         """
         Get object from DataBase
 
@@ -55,8 +55,9 @@ class MongoLog(BaseLog):
         with cls.mongo_collection() as collection:  # type: Collection
             if task := collection.find_one({"uuid": uuid}):
                 return cls(**task)
+            return None
 
-    def save(self):
+    def save(self) -> "MongoLog":
         """
         Updates/Creates object in DataBase
 

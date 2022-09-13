@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List
+from typing import Dict, List, Union
 from sqlmodel import Session, SQLModel, create_engine, select, Field
 from pydantic import BaseModel
 from datetime import datetime
@@ -30,7 +30,7 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
 
     @classmethod
     @contextmanager
-    def sql_session(cls) -> Session:
+    def sql_session(cls):
         """
         Yield a connection
         """
@@ -42,7 +42,7 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
             yield session
 
     @classmethod
-    def get(cls, uuid: UUID):
+    def get(cls, uuid: UUID) -> Union["SQLLog", None]:
         """
         Get object from DataBase
 
@@ -56,8 +56,9 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
             statement = select(cls).where(cls.uuid == str(uuid))
             if task := session.exec(statement).first():
                 return task
+            return None
 
-    def save(self):
+    def save(self) -> "SQLLog":
         """
         Updates/Creates object in DataBase
 
@@ -76,7 +77,7 @@ class SQLLog(BaseLog, SQLModel, table=True):  # type: ignore
             session.refresh(self)
         return self
 
-    def delete(self):
+    def delete(self) -> int:
         """
         Deletes object in DataBase
 
