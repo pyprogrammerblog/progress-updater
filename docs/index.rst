@@ -92,8 +92,6 @@ automatically configured::
    from progress_updater.backends import Settings
 
    updater = ProgressUpdater(task_name="My Task")
-   isinstance(updater.settings, Settings)
-
 
 .. toctree::
    :maxdepth: 2

@@ -77,8 +77,7 @@ settings = MongoSettings(
     mongo_collection="logs",
 )
 
-with ProgressUpdater(task_name="My Task", settings=settings) as updater:
-    pass
+updater = ProgressUpdater(task_name="My Task", settings=settings)
 ```
 
 2. **Environment variables**.
@@ -93,10 +92,8 @@ And then when creating a `ProgressUpdater` object, the backend will be
 automatically configured.
 ```python
 from progress_updater import ProgressUpdater
-from progress_updater.backends import Settings
 
 updater = ProgressUpdater(task_name="My Task")
-isinstance(updater.settings, Settings)
 ```
 
 Documentation

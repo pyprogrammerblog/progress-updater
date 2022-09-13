@@ -111,7 +111,6 @@ class ProgressUpdater:
 
         >>> from progress_updater import ProgressUpdater
         >>> updater = ProgressUpdater(task_name="My Task")
-        >>> isinstance(updater.settings, Settings)
     """
 
     FAIL = "FAIL"

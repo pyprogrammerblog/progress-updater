@@ -17,7 +17,6 @@ __all__ = [
 
 class Settings(BaseSettings):
     """
-    **Settings.**
 
     Different ways to pass settings to the `Settings` with priority order.
 
@@ -62,10 +61,8 @@ class Settings(BaseSettings):
     automatically configured::
 
         >>> from progress_updater import ProgressUpdater
-        >>> from progress_updater.backends import Settings
         >>>
         >>> updater = ProgressUpdater(task_name="My Task")
-        >>> isinstance(updater.settings, Settings)
     """
 
     pu: Union[RedisSettings, MongoSettings, SQLSettings]
