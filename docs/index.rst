@@ -99,7 +99,6 @@ automatically configured::
 
    installation
    updater
-   settings
    sql
    mongo
    redis
