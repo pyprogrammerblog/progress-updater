@@ -62,8 +62,6 @@ The output is::
 Backends
 -------------------
 The available backends to store logs are **Mongo**, **Redis** and **SQL**.
-Please read the [docs](https://progress-updater.readthedocs.io/en/latest/)
-for further information.
 
 Environment variables
 -----------------------
