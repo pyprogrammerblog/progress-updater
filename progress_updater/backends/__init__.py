@@ -1,5 +1,5 @@
-from pydantic import BaseSettings
 from typing import Union
+from pydantic import BaseSettings
 from progress_updater.backends.redis import RedisSettings, RedisLog
 from progress_updater.backends.mongo import MongoSettings, MongoLog
 from progress_updater.backends.sql import SQLSettings, SQLLog
@@ -17,7 +17,7 @@ __all__ = [
 
 class Settings(BaseSettings):
     """
-    Defines the wrapper around the settings.
+    Defines a wrapper around the different settings.
 
     You can pass settings directly or define them as ENV vars on your system.
 
@@ -75,6 +75,7 @@ class Settings(BaseSettings):
 
     def backend(self):
         """
-        Return a Backend with configuration already set
+        Return a Backend (Redis, Mongo, SQL) with configuration
+        already set up.
         """
         return self.pu.backend()

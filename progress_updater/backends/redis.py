@@ -4,7 +4,7 @@ from typing import Dict, Type, List, Union
 from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel, Field
-from progress_updater.backends.log import BaseLog
+from progress_updater.backends.base import BaseLog
 from contextlib import contextmanager
 
 __all__ = ["RedisLog", "RedisSettings"]

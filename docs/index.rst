@@ -10,14 +10,14 @@ Welcome to progress-updater' documentation!
 Writing the progress of a task to a backend!
 
 Installation
--------------
+---------------
 
 Install it using `pip`::
 
    pip install progress-updater
 
 Basic usage
--------------
+---------------
 
 Make sure you have the `progress-updater` installed::
 
@@ -97,6 +97,7 @@ automatically configured::
 
    installation
    updater
+   settings
    sql
    mongo
    redis
