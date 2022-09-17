@@ -75,11 +75,13 @@ The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 PU__SQL_DSN='postgresql+psycopg2://user:pass@postgres:5432/db'
 PU__SQL_TABLE='logs'
 ...
+
 # Redis
 PU__REDIS_HOST='redis'
 PU__REDIS_DB='1'
 PU__REDIS_PASSWORD='pass'
 ...
+
 # Mongo
 PU__MONGO_CONNECTION='mongodb://user:pass@mongo:27017'
 PU__MONGO_DB='db'
