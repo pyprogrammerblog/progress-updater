@@ -17,8 +17,9 @@ __all__ = [
 
 class Settings(BaseSettings):
     """
+    Defines the wrapper around the settings.
 
-    Different ways to pass settings to the `Settings` with priority order.
+    You can pass settings directly or define them as ENV vars on your system.
 
     **1. Passing settings** as parameters when creating a `Settings`
     object:
@@ -60,9 +61,9 @@ class Settings(BaseSettings):
     And then when creating a `ProgressUpdater` object, the backend will be
     automatically configured::
 
-        >>> from progress_updater import ProgressUpdater
+        >>> from progress_updater.backends import Settings
         >>>
-        >>> updater = ProgressUpdater(task_name="My Task")
+        >>> updater = Settings()
     """
 
     pu: Union[RedisSettings, MongoSettings, SQLSettings]
