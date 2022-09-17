@@ -1,10 +1,10 @@
 import logging
 from datetime import datetime
 from uuid import UUID
+from contextlib import contextmanager
 from typing import Dict, Type, List, Union
 from pydantic import BaseModel, Field
 from pymongo.collection import Collection
-from contextlib import contextmanager
 from progress_updater.backends.log import BaseLog
 from pymongo.mongo_client import MongoClient
 
