@@ -66,8 +66,8 @@ The available backends to store logs are **Mongo**, **Redis** and **SQL**.
 Please read the [docs](https://progress-updater.readthedocs.io/en/latest/) 
 for further information.
 
-Environment variables
------------------------
+Setting your backend with environment variables
+--------------------------------------------------
 You can set your backend by defining env vars.
 The `PU__` prefix indicates that it belongs to `ProgressUpdater`.
 ```shell
