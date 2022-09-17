@@ -1,5 +1,5 @@
-from pydantic import BaseSettings
 from typing import Union
+from pydantic import BaseSettings
 from progress_updater.backends.redis import RedisSettings, RedisLog
 from progress_updater.backends.mongo import MongoSettings, MongoLog
 from progress_updater.backends.sql import SQLSettings, SQLLog
@@ -17,10 +17,11 @@ __all__ = [
 
 class Settings(BaseSettings):
     """
+    Defines a wrapper around the different settings.
 
-    Different ways to pass settings to the `Settings` with priority order.
+    You can pass settings directly or define them as ENV vars on your system.
 
-    **1. Passing settings** as parameters when creating a `ProgressUpdater`
+    **1. Passing settings** as parameters when creating a `Settings`
     object:
 
         >>> from progress_updater import ProgressUpdater
@@ -60,9 +61,9 @@ class Settings(BaseSettings):
     And then when creating a `ProgressUpdater` object, the backend will be
     automatically configured::
 
-        >>> from progress_updater import ProgressUpdater
+        >>> from progress_updater.backends import Settings
         >>>
-        >>> updater = ProgressUpdater(task_name="My Task")
+        >>> updater = Settings()
     """
 
     pu: Union[RedisSettings, MongoSettings, SQLSettings]
@@ -74,6 +75,7 @@ class Settings(BaseSettings):
 
     def backend(self):
         """
-        Return a Backend with configuration already set
+        Return a Backend (Redis, Mongo, SQL) with configuration
+        already set up.
         """
         return self.pu.backend()
