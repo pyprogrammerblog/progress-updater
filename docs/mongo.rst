@@ -16,4 +16,4 @@ Mongo Backend
 
 .. automodule:: progress_updater.backends.mongo
     :members: MongoLog
-    :exclude-members: mongo_collection, backend
+    :exclude-members: mongo_collection
