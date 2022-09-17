@@ -44,7 +44,7 @@ class ProgressUpdater:
     Different ways to pass settings to the `ProgressUpdater`.
 
     **1. Passing settings** as parameters when creating a `ProgressUpdater`
-    object:
+    object like in the above example:
 
         >>> from progress_updater import ProgressUpdater
         >>> from progress_updater import ProgressUpdater
@@ -64,7 +64,6 @@ class ProgressUpdater:
         >>> redis_settings = RedisSettings(
         >>>     redis_host="redis", redis_password="pass"
         >>> )
-        >>>
 
 
     **2. Environment variables**. Set you setting parameters in your
